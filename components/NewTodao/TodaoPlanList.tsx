@@ -1,0 +1,74 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
+
+import { Card, FAB } from "react-native-paper";
+import { useSQLiteContext } from "expo-sqlite";
+import { useEffect, useState } from "react";
+import { PlanningCategories, PlanningCategory } from "@/types/types";
+import { InputDialog } from "@/components/InputDialog";
+import { NestedPlanAccordionCTA } from "./NestedPlanAccordionCTA";
+
+export const TodaoPlanList = ({
+  tag,
+  onTextSubmit,
+}: {
+  tag: string | null;
+  onTextSubmit: (label: string, catId?: number) => void;
+}) => {
+  const db = useSQLiteContext();
+  const [categories, setCategories] = useState<PlanningCategories>([]);
+  const [reloadDB, setReloadDB] = useState(true);
+  const [dialogVisible, setDialogVisible] = useState(false);
+
+  useEffect(() => {
+    async function setup() {
+      const result = await db.getAllAsync<PlanningCategory>(
+        `SELECT * FROM planning_categories WHERE parent IS NULL AND ${
+          tag === null ? "tag is NULL" : `tag="${tag}" AND completed=0`
+        }`
+      );
+      setCategories(result);
+    }
+    if (reloadDB) {
+      setup();
+      setReloadDB(false);
+    }
+  }, [reloadDB]);
+
+  return (
+    <View
+      style={{
+        height: "100%",
+      }}
+    >
+      <ScrollView>
+        <View style={{ gap: 15, marginBottom: 100 }}>
+          {categories.map((cat) => (
+            <Card key={cat.id} style={{ paddingHorizontal: 10 }}>
+              <NestedPlanAccordionCTA onTextSubmit={onTextSubmit} cat={cat} />
+            </Card>
+          ))}
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  fab: {
+    position: "absolute",
+    margin: 16,
+    right: 0,
+    bottom: 0,
+  },
+  headerImage: {
+    color: "#808080",
+    bottom: -90,
+    left: -35,
+    position: "absolute",
+  },
+  titleContainer: {
+    flexDirection: "row",
+    gap: 8,
+  },
+});

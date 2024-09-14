@@ -41,9 +41,10 @@ export const NestedPlanAccordion = ({
 
   const onNewCategory = async (label: string) => {
     const res = await db.runAsync(
-      "INSERT INTO planning_categories (label, parent) VALUES (?, ?)",
+      "INSERT INTO planning_categories (label, parent, parentLabel) VALUES (?, ?, ?)",
       label,
-      cat.id
+      cat.id,
+      cat.label
     );
     setReloadDB(true);
   };

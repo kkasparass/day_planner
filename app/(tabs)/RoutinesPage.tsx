@@ -6,6 +6,7 @@ import {
   View,
   ScrollView,
   Dimensions,
+  FlatList,
 } from "react-native";
 
 import ParallaxScrollView from "@/components/ParallaxScrollView";
@@ -14,26 +15,26 @@ import { ThemedView } from "@/components/ThemedView";
 import { Button, Card, Divider, FAB, List, Text } from "react-native-paper";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
-import { PlanningCategories, PlanningCategory } from "@/types/types";
+import { Routine as RoutineT, Routines } from "@/types/types";
 import { NestedPlanAccordion } from "@/components/NestedPlanAccordion";
 import { InputDialog } from "@/components/InputDialog";
 import { PlanList } from "@/components/PlanList";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SwipeableTabs from "@/components/SwipeTabs/SwipeableTabs";
+import { Routine } from "@/components/Routines/Routine";
 
-export default function TabTwoScreen() {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
+export default function RoutinesPage() {
   const db = useSQLiteContext();
-  const [tags, setTags] = useState<(string | null)[]>([]);
+  const [todaoTimeline, setTodaoTimeline] = useState<Routines>();
   const [reloadDB, setReloadDB] = useState(true);
+  const [dialogVisible, setDialogVisible] = useState(false);
 
   useEffect(() => {
     async function setup() {
-      const result = await db.getAllAsync<{ tag: string | null }>(
-        `SELECT tag FROM planning_categories GROUP BY tag;`
+      const result = await db.getAllAsync<RoutineT>(
+        "SELECT * FROM routines ORDER BY id DESC"
       );
-      setTags(result.map(({ tag }) => tag));
+      setTodaoTimeline(result);
     }
     if (reloadDB) {
       setup();
@@ -41,18 +42,52 @@ export default function TabTwoScreen() {
     }
   }, [reloadDB]);
 
+  const handleNewRoute = async (title: string) => {
+    await db.runAsync("INSERT INTO routines (title) VALUES (?)", title ?? "");
+    setReloadDB(true);
+  };
+
+  if (!todaoTimeline) {
+    return null;
+  }
+
   return (
-    <SafeAreaView>
-      <SwipeableTabs
-        onSwipe={(x) => setSelectedIndex(x)}
-        selectedIndex={selectedIndex}
-        labels={tags.map((tag) => (tag === null ? "all" : tag))}
+    <ParallaxScrollView title="Routines">
+      <Button
+        mode="contained"
+        style={{ width: "100%", height: 40 }}
+        onPress={() => setDialogVisible(true)}
       >
-        {tags.map((tag) => (
-          <PlanList tag={tag} key={tag} />
-        ))}
-      </SwipeableTabs>
-    </SafeAreaView>
+        New Routine
+      </Button>
+
+      <Divider />
+
+      <FlatList
+        data={todaoTimeline}
+        renderItem={({ item: routine }) => (
+          <Routine
+            routine={routine}
+            key={routine.id}
+            reloadRoutines={() => setReloadDB(true)}
+          />
+        )}
+        keyExtractor={(item) => `${item.id}`}
+      />
+
+      {/* {todaoTimeline.map((routine) => (
+        <Routine
+          routine={routine}
+          key={routine.id}
+          reloadRoutines={() => setReloadDB(true)}
+        />
+      ))} */}
+      <InputDialog
+        isVisible={dialogVisible}
+        onDismiss={() => setDialogVisible(false)}
+        onTextSubmit={handleNewRoute}
+      />
+    </ParallaxScrollView>
   );
 }
 

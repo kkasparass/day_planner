@@ -6,6 +6,7 @@ export type PlanningCategory = {
   tag: string;
   parentLabel: string;
   lastDone: string;
+  repeatFreq: number | null;
 };
 
 export type PlanningCategories = PlanningCategory[];
@@ -24,3 +25,17 @@ export type TodoTimelineItem = {
 };
 
 export type TodoTimeline = TodoTimelineItem[];
+
+export type Routine = {
+  title: string;
+  id: number;
+};
+
+export type Routines = Routine[];
+
+export type RoutineItem = {
+  id: number;
+  label: string;
+  routineId: number;
+  catId?: number;
+};

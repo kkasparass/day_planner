@@ -1,8 +1,6 @@
-import { ScrollView, StyleSheet, View } from "react-native";
-import { useEffect, useState } from "react";
-import { Button, Card, Dialog, Portal, TextInput } from "react-native-paper";
-import { useSQLiteContext } from "expo-sqlite";
-import { PlanningCategories, PlanningCategory } from "@/types/types";
+import { StyleSheet, View } from "react-native";
+import { useState } from "react";
+import { Button, Modal, Portal, Text, TextInput } from "react-native-paper";
 import { TodaoTagViews } from "./TodaoTagViews";
 
 export const NewTodaoDialog = ({
@@ -23,30 +21,57 @@ export const NewTodaoDialog = ({
 
   return (
     <Portal>
-      <Dialog visible={isVisible} onDismiss={onDismiss}>
-        <Dialog.Title>New Todo</Dialog.Title>
-        <Dialog.Content>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              columnGap: 15,
-              marginBottom: 20,
-            }}
+      <Modal
+        visible={isVisible}
+        onDismiss={onDismiss}
+        style={{
+          height: "100%",
+          width: "100%",
+          backgroundColor: "black",
+        }}
+      >
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: 40,
+            paddingHorizontal: 15,
+          }}
+        >
+          <Text variant="displayMedium">New Todao</Text>
+          <Button mode="contained" onPress={onDismiss}>
+            X
+          </Button>
+        </View>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            columnGap: 15,
+            marginBottom: 20,
+            paddingHorizontal: 15,
+          }}
+        >
+          <TextInput
+            style={{ width: "70%" }}
+            label="Todo"
+            defaultValue={todaoText}
+            onChangeText={(text) => setTodaoText(text)}
+          />
+          <Button
+            mode="contained"
+            onPress={handleUpdateChecked}
+            style={{ width: "25%" }}
           >
-            <TextInput
-              style={{ width: 230 }}
-              label="Todo"
-              value={todaoText}
-              onChangeText={(text) => setTodaoText(text)}
-            />
-            <Button mode="contained" onPress={handleUpdateChecked}>
-              Add
-            </Button>
-          </View>
-          <TodaoTagViews onTextSubmit={onTextSubmit} />
-        </Dialog.Content>
-      </Dialog>
+            Add
+          </Button>
+        </View>
+        <TodaoTagViews onTextSubmit={onTextSubmit} />
+      </Modal>
     </Portal>
   );
 };

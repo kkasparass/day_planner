@@ -11,13 +11,11 @@ type Props = PropsWithChildren<{ title: string }>;
 
 export default function ParallaxScrollView({ children, title }: Props) {
   return (
-    <SafeAreaView>
-      <Animated.ScrollView scrollEventThrottle={16}>
-        <Appbar>
-          <Appbar.Content title={title} />
-        </Appbar>
-        <ThemedView style={styles.content}>{children}</ThemedView>
-      </Animated.ScrollView>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Appbar>
+        <Appbar.Content title={title} />
+      </Appbar>
+      <ThemedView style={styles.content}>{children}</ThemedView>
     </SafeAreaView>
   );
 }

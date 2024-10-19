@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { Button, Card, Divider, Text } from "react-native-paper";
 import { DailyTodo, TodoTimelineItem } from "@/types/types";
 import { useSQLiteContext } from "expo-sqlite";
-import { TodayTask } from "./Task";
-import { InputDialog } from "./InputDialog";
-import { NewTodaoDialog } from "./NewTodao/NewTodaoDialog";
+import { TodayTask } from "../Task";
+import { InputDialog } from "../InputDialog";
+import { NewTodaoDialog } from "../NewTodao/NewTodaoDialog";
 
 export const TimelineItem = ({
   timelineItem,
@@ -42,14 +42,13 @@ export const TimelineItem = ({
   };
 
   const onTextSubmit = async (label: string, catId?: number) => {
-    console.log(catId);
     await db.runAsync(
       "INSERT INTO daily_todos (label, timelineId, catId) VALUES (?, ?, ?)",
       label,
       timelineItem.id,
       catId ? catId : null
     );
-    setReloadDB(true);
+    // setReloadDB(true);
   };
 
   return (
@@ -102,7 +101,10 @@ export const TimelineItem = ({
       <Divider />
       <NewTodaoDialog
         isVisible={dialogVisible}
-        onDismiss={() => setDialogVisible(false)}
+        onDismiss={() => {
+          setDialogVisible(false);
+          setReloadDB(true);
+        }}
         onTextSubmit={onTextSubmit}
       />
     </View>

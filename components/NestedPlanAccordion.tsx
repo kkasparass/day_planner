@@ -41,10 +41,11 @@ export const NestedPlanAccordion = ({
 
   const onNewCategory = async (label: string) => {
     const res = await db.runAsync(
-      "INSERT INTO planning_categories (label, parent, parentLabel) VALUES (?, ?, ?)",
+      "INSERT INTO planning_categories (label, parent, parentLabel, repeatFreq) VALUES (?, ?, ?, ?)",
       label,
       cat.id,
-      cat.label
+      cat.label,
+      0
     );
     setReloadDB(true);
   };
@@ -74,14 +75,15 @@ export const NestedPlanAccordion = ({
         }}
       >
         <Text
-          style={
-            cat.completed && {
+          style={{
+            width: 150,
+            ...(cat.completed && {
               textDecorationLine: "line-through",
               textDecorationStyle: "solid",
-            }
-          }
+            }),
+          }}
         >
-          {cat.label} {hasChidlren && <Text>{selected ? "-" : "+"}</Text>}
+          {hasChidlren && <Text>{selected ? "- " : "+ "}</Text>} {cat.label}
         </Text>
         <View
           style={{

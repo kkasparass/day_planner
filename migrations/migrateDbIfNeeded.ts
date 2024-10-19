@@ -4,9 +4,13 @@ import { addCategoriesTableMigration } from "@/migrations/1_add_categories";
 import { addTagColumnMigration } from "@/migrations/3_add_tag_column";
 import { resetCompletedColumnMigration } from "./4_reset_completed_column";
 import { lastDoneAndTodaoCategoryLinkMigration } from "./5_add_last_done_and_todao_link";
+import { addRepeatFreqColumnMigration } from "./6_add_repeat_freq_to_cat";
+import { reapeatFreqSetValueMigration } from "./7_reapeat_freq_set_value";
+import { createRoutinesTableMigration } from "./8_routines_table";
+import { createRoutineItemsTableMigration } from "./9_add_routine_items_table";
 
 export const migrateDbIfNeeded = async (db: SQLiteDatabase) => {
-  const DATABASE_VERSION = 6;
+  const DATABASE_VERSION = 10;
   let { user_version: currentDbVersion } = (await db.getFirstAsync<{
     user_version: number;
   }>("PRAGMA user_version")) as {
@@ -38,6 +42,22 @@ export const migrateDbIfNeeded = async (db: SQLiteDatabase) => {
   if (currentDbVersion === 5) {
     await lastDoneAndTodaoCategoryLinkMigration(db);
     currentDbVersion = 6;
+  }
+  if (currentDbVersion === 6) {
+    await addRepeatFreqColumnMigration(db);
+    currentDbVersion = 7;
+  }
+  if (currentDbVersion === 7) {
+    await reapeatFreqSetValueMigration(db);
+    currentDbVersion = 8;
+  }
+  if (currentDbVersion === 8) {
+    await createRoutinesTableMigration(db);
+    currentDbVersion = 9;
+  }
+  if (currentDbVersion === 9) {
+    await createRoutineItemsTableMigration(db);
+    currentDbVersion = 10;
   }
 
   await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);

@@ -31,9 +31,10 @@ export const PlanList = ({ tag }: { tag: string | null }) => {
 
   const onNewParentCategory = async (label: string) => {
     const res = await db.runAsync(
-      "INSERT INTO planning_categories (label, tag) VALUES (?, ?)",
+      "INSERT INTO planning_categories (label, tag, repeatFreq) VALUES (?, ?, ?)",
       label,
-      tag
+      tag,
+      0
     );
     setReloadDB(true);
   };

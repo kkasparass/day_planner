@@ -93,9 +93,9 @@ export default function SwipeableTabs(props: IProps) {
 
   return children && children.length ? (
     <View
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
-      onTouchMove={onTouchMove}
+      // onTouchStart={onTouchStart}
+      // onTouchEnd={onTouchEnd}
+      // onTouchMove={onTouchMove}
       style={styles.window}
     >
       {!!labels && (

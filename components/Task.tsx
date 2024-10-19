@@ -29,6 +29,18 @@ export const TodayTask = ({
     reloadTodos();
   };
 
+  const handlePlanCompleted = async () => {
+    await db.runAsync("UPDATE daily_todos SET completed = ? WHERE id = ?", [
+      1,
+      id,
+    ]);
+    await db.runAsync(
+      "UPDATE planning_categories SET completed = ?, lastDone = ? WHERE id = ?",
+      [1, `${new Date()}`, catId]
+    );
+    reloadTodos();
+  };
+
   const handleDelete = async () => {
     await db.runAsync("DELETE FROM daily_todos WHERE id = $id", { $id: id });
     reloadTodos();
@@ -56,13 +68,31 @@ export const TodayTask = ({
         <Checkbox status={completed ? "checked" : "unchecked"} />
         <Text>{todo.label}</Text>
       </View>
-      <Button
-        mode="contained"
-        style={{ width: 50, height: "100%" }}
-        onPress={handleDelete}
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: 10,
+          alignItems: "center",
+        }}
       >
-        -
-      </Button>
+        {catId && (
+          <Button
+            mode="contained"
+            style={{ width: 50, height: "100%" }}
+            onPress={handlePlanCompleted}
+          >
+            C
+          </Button>
+        )}
+        <Button
+          mode="contained"
+          style={{ width: 50, height: "100%" }}
+          onPress={handleDelete}
+        >
+          -
+        </Button>
+      </View>
     </Pressable>
   );
 };

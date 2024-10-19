@@ -1,14 +1,10 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { StyleSheet, Image, Platform, View, Pressable } from "react-native";
+import { View, Pressable } from "react-native";
 
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { Button, Checkbox, Divider, FAB, List, Text } from "react-native-paper";
+import { Checkbox, Text, TextInput } from "react-native-paper";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { PlanningCategories, PlanningCategory } from "@/types/types";
-import { InputDialog } from "./InputDialog";
+import { InputDialog } from "../InputDialog";
 import { Link } from "expo-router";
 
 export const EditNestedPlanItem = ({
@@ -22,6 +18,7 @@ export const EditNestedPlanItem = ({
   const [categories, setCategories] = useState<PlanningCategories>([]);
   const [reloadDB, setReloadDB] = useState(true);
   const [dialogVisible, setDialogVisible] = useState(false);
+  const [repeatFreqFreqInput, setRepeatFreqInput] = useState(cat.repeatFreq);
 
   useEffect(() => {
     async function setup() {
@@ -42,6 +39,13 @@ export const EditNestedPlanItem = ({
       [!cat.completed, cat.id]
     );
     reloadParent();
+  };
+
+  const handleUpdateRepeatFreq = async (input: number) => {
+    await db.runAsync(
+      "UPDATE planning_categories SET repeatFreq = ? WHERE id = ?",
+      [input, cat.id]
+    );
   };
 
   const handleEditLabel = async (label: string) => {
@@ -90,6 +94,16 @@ export const EditNestedPlanItem = ({
             </Text>
           </Pressable>
         </View>
+        <TextInput
+          style={{ width: "25%" }}
+          label="RepeatFreq"
+          keyboardType="numeric"
+          defaultValue={repeatFreqFreqInput ? `${repeatFreqFreqInput}` : ""}
+          onChangeText={(text) => {
+            handleUpdateRepeatFreq(Number(text));
+            setRepeatFreqInput(Number(text));
+          }}
+        />
       </View>
       <View style={{ marginLeft: 20 }}>
         {hasChidlren &&

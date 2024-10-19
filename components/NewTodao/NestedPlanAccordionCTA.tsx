@@ -1,14 +1,23 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { StyleSheet, Image, Platform, View, Pressable } from "react-native";
+import { View, Pressable } from "react-native";
 
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { Button, Divider, FAB, List, Text } from "react-native-paper";
+import { Text } from "react-native-paper";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { PlanningCategories, PlanningCategory } from "@/types/types";
 import { AddFromPlanButton } from "./AddFromPlanButton";
+import { add, differenceInDays } from "date-fns";
+
+const resolveDaysOver = (repeatFreq: number, lastDone: Date | null): number => {
+  if (repeatFreq === 0) {
+    return -10;
+  }
+  if (lastDone === null) {
+    return 1;
+  }
+  const today = new Date();
+  const repeatBy = add(lastDone, { days: repeatFreq });
+  return differenceInDays(today, repeatBy);
+};
 
 export const NestedPlanAccordionCTA = ({
   cat,
@@ -21,8 +30,6 @@ export const NestedPlanAccordionCTA = ({
   const db = useSQLiteContext();
   const [categories, setCategories] = useState<PlanningCategories>([]);
   const [reloadDB, setReloadDB] = useState(true);
-
-  console.log(categories);
 
   useEffect(() => {
     async function setup() {
@@ -70,6 +77,10 @@ export const NestedPlanAccordionCTA = ({
             onPress={() => onTextSubmit(cat.label, cat.id)}
             label={cat.label}
             lastDone={cat.lastDone ? new Date(cat.lastDone).toDateString() : ""}
+            daysOver={resolveDaysOver(
+              cat.repeatFreq ?? 0,
+              cat.lastDone ? new Date(cat.lastDone) : null
+            )}
           />
         )}
       </View>

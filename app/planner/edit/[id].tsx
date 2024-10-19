@@ -19,9 +19,9 @@ import { PlanningCategories, PlanningCategory } from "@/types/types";
 import { NestedPlanAccordion } from "@/components/NestedPlanAccordion";
 import { InputDialog } from "@/components/InputDialog";
 import { useLocalSearchParams } from "expo-router";
-import { EditNestedPlanItem } from "@/components/EditNestedPlanItem";
+import { EditNestedPlanItem } from "@/components/EditCat/EditNestedPlanItem";
 
-export default function TabTwoScreen() {
+export default function CatEdit() {
   const db = useSQLiteContext();
   const { id } = useLocalSearchParams();
   const [baseCategory, setBaseCategory] = useState<PlanningCategory | null>(
@@ -77,7 +77,7 @@ export default function TabTwoScreen() {
           <TextInput
             style={{ width: "75%" }}
             label="Tag"
-            value={inputText}
+            defaultValue={inputText}
             onChangeText={(text) => setInputText(text)}
           />
           <Button mode="contained" onPress={handleTextSubmit}>

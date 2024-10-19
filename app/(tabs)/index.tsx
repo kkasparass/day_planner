@@ -1,10 +1,10 @@
-import { Image, StyleSheet } from "react-native";
+import { FlatList, Image, StyleSheet } from "react-native";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { Button, Divider } from "react-native-paper";
 import { useEffect, useState } from "react";
 import { TodoTimeline, TodoTimelineItem } from "@/types/types";
 import { useSQLiteContext } from "expo-sqlite";
-import { TimelineItem } from "@/components/TimelineItem";
+import { TimelineItem } from "@/components/TodaoTimeline/TimelineItem";
 
 interface Todo {
   id: number;
@@ -54,13 +54,17 @@ export default function HomeScreen() {
 
       <Divider />
 
-      {todaoTimeline.map((todoDay) => (
-        <TimelineItem
-          timelineItem={todoDay}
-          key={todoDay.id}
-          reloadTimeline={() => setReloadDB(true)}
-        />
-      ))}
+      <FlatList
+        data={todaoTimeline}
+        renderItem={({ item: todoDay }) => (
+          <TimelineItem
+            timelineItem={todoDay}
+            key={todoDay.id}
+            reloadTimeline={() => setReloadDB(true)}
+          />
+        )}
+        keyExtractor={(item) => `${item.id}`}
+      />
     </ParallaxScrollView>
   );
 }

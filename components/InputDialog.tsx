@@ -24,16 +24,22 @@ export const InputDialog = ({
       <Dialog visible={isVisible} onDismiss={onDismiss}>
         <Dialog.Title>Text input</Dialog.Title>
         <Dialog.Content
-          style={{ display: "flex", flexDirection: "row", columnGap: 15 }}
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            columnGap: 15,
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
         >
           <TextInput
             style={{ width: 230 }}
             label="Todo"
-            value={todaoText}
+            defaultValue={todaoText}
             onChangeText={(text) => setTodaoText(text)}
           />
           <Button mode="contained" onPress={handleTextSubmit}>
-            Do
+            +
           </Button>
         </Dialog.Content>
       </Dialog>

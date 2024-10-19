@@ -18,7 +18,6 @@ export const TodaoPlanList = ({
   const db = useSQLiteContext();
   const [categories, setCategories] = useState<PlanningCategories>([]);
   const [reloadDB, setReloadDB] = useState(true);
-  const [dialogVisible, setDialogVisible] = useState(false);
 
   useEffect(() => {
     async function setup() {

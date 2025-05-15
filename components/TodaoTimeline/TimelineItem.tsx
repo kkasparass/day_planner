@@ -86,6 +86,7 @@ export const TimelineItem = ({
             <TodayTask
               todo={todo}
               key={todo.id}
+              dayDate={timelineItem.date}
               reloadTodos={() => setReloadDB(true)}
             />
           ))}

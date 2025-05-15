@@ -6,10 +6,12 @@ import { useSQLiteContext } from "expo-sqlite";
 
 export const TodayTask = ({
   todo,
+  dayDate,
   reloadTodos,
 }: {
   todo: DailyTodo;
   reloadTodos: () => void;
+  dayDate: string;
 }) => {
   const db = useSQLiteContext();
 
@@ -23,7 +25,7 @@ export const TodayTask = ({
     if (catId) {
       await db.runAsync(
         "UPDATE planning_categories SET lastDone = ? WHERE id = ?",
-        [`${new Date()}`, catId]
+        [dayDate, catId]
       );
     }
     reloadTodos();
@@ -36,7 +38,7 @@ export const TodayTask = ({
     ]);
     await db.runAsync(
       "UPDATE planning_categories SET completed = ?, lastDone = ? WHERE id = ?",
-      [1, `${new Date()}`, catId]
+      [1, dayDate, catId]
     );
     reloadTodos();
   };

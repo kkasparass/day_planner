@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button, Modal, Portal, Text, TextInput } from "react-native-paper";
 import { TodaoTagViews } from "./TodaoTagViews";
 
@@ -13,10 +13,12 @@ export const NewTodaoDialog = ({
   onTextSubmit: (label: string, catId?: number) => void;
 }) => {
   const [todaoText, setTodaoText] = useState("");
+  const input = useRef(null);
 
   const handleUpdateChecked = () => {
     onTextSubmit(todaoText);
     setTodaoText("");
+    input.current.clear();
   };
 
   return (
@@ -26,6 +28,7 @@ export const NewTodaoDialog = ({
         onDismiss={onDismiss}
         style={{
           height: "100%",
+          paddingTop: 100,
           width: "100%",
           backgroundColor: "black",
         }}
@@ -59,6 +62,7 @@ export const NewTodaoDialog = ({
           <TextInput
             style={{ width: "70%" }}
             label="Todo"
+            ref={input}
             defaultValue={todaoText}
             onChangeText={(text) => setTodaoText(text)}
           />

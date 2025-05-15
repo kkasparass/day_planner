@@ -11,7 +11,8 @@
     "test": "jest --watchAll",
     "lint": "expo lint",
     "build:dev": "eas build --profile development --platform android",
-    "build:preview": "eas build -p android --profile preview"
+    "build:preview": "eas build -p android --profile preview",
+    "install:thing": "expo install expo-document-picker expo-sharing"
   },
   "jest": {
     "preset": "jest-expo"
@@ -43,7 +44,10 @@
     "react-native-swipe-tabs": "1.1.3",
     "react-native-vector-icons": "^10.1.0",
     "react-native-web": "~0.19.10",
-    "reanimated-bottom-sheet": "^1.0.0-alpha.22"
+    "reanimated-bottom-sheet": "^1.0.0-alpha.22",
+    "expo-file-system": "~17.0.1",
+    "expo-document-picker": "~12.0.2",
+    "expo-sharing": "~12.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

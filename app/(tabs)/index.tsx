@@ -6,11 +6,8 @@ import { TodoTimeline, TodoTimelineItem } from "@/types/types";
 import { useSQLiteContext } from "expo-sqlite";
 import { TimelineItem } from "@/components/TodaoTimeline/TimelineItem";
 
-interface Todo {
-  id: number;
-  value: string;
-  intValue: number;
-}
+// Add an energy level for each todao, and effort values for todaos + planned items. The effort cap will be displayed by the border of the todao?
+// We'll want to warn the todao list Of the current totals already added. All of the values should be updatable for each day
 
 export default function HomeScreen() {
   const db = useSQLiteContext();

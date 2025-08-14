@@ -6,6 +6,7 @@ import {
   Routine as RoutineT,
   RoutineItem as RoutineItemT,
   TodoTimelineItem,
+  PlanningCategory,
 } from "@/types/types";
 import { useSQLiteContext } from "expo-sqlite";
 import { NewTodaoDialog } from "../NewTodao/NewTodaoDialog";
@@ -20,7 +21,7 @@ export const Routine = ({
   reloadRoutines: () => void;
 }) => {
   const db = useSQLiteContext();
-  const [dayTodos, setDayTodods] = useState<RoutineItemT[]>([]);
+  const [routineItems, setRoutineItems] = useState<RoutineItemT[]>([]);
   const [reloadDB, setReloadDB] = useState(true);
   const [newDialogVisible, setNewDialogVisible] = useState(false);
   const [timelineListdialogVisible, setTimelineListDialogVisible] =
@@ -33,7 +34,7 @@ export const Routine = ({
          ORDER BY
           id ASC;`
       );
-      setDayTodods(result);
+      setRoutineItems(result);
     }
     if (reloadDB) {
       setup();
@@ -48,23 +49,25 @@ export const Routine = ({
     reloadRoutines();
   };
 
-  const onTextSubmit = async (label: string, catId?: number) => {
+  const onTextSubmit = async (label: string, cat?: PlanningCategory) => {
     await db.runAsync(
-      "INSERT INTO routine_items (label, routineId, catId) VALUES (?, ?, ?)",
+      "INSERT INTO routine_items (label, routineId, catId, effort) VALUES (?, ?, ?, ?)",
       label,
       routine.id,
-      catId ? catId : null
+      cat ? cat.id : null,
+      cat?.effort || 0
     );
     setReloadDB(true);
   };
 
   const onMergeIntoTimelineItem = async (timelineId: number) => {
-    dayTodos.forEach(async (routineItem) => {
+    routineItems.forEach(async (routineItem) => {
       await db.runAsync(
-        "INSERT INTO daily_todos (label, timelineId, catId) VALUES (?, ?, ?)",
+        "INSERT INTO daily_todos (label, timelineId, catId, effort) VALUES (?, ?, ?, ?)",
         routineItem.label,
         timelineId,
-        routineItem.catId ? routineItem.catId : null
+        routineItem.catId ? routineItem.catId : null,
+        routineItem.effort
       );
     });
     setTimelineListDialogVisible(false);
@@ -101,7 +104,7 @@ export const Routine = ({
             gap: 10,
           }}
         >
-          {dayTodos.map((routineItem) => (
+          {routineItems.map((routineItem) => (
             <RoutineItem
               routineItem={routineItem}
               key={routineItem.id}
@@ -131,6 +134,8 @@ export const Routine = ({
           setReloadDB(true);
         }}
         onTextSubmit={onTextSubmit}
+        energyCap={100}
+        currentEffortTotal={0}
       />
       <TimelineListDialog
         isVisible={timelineListdialogVisible}

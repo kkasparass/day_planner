@@ -5,15 +5,19 @@ import { Card, FAB } from "react-native-paper";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { PlanningCategories, PlanningCategory } from "@/types/types";
-import { InputDialog } from "@/components/InputDialog";
+import { InputDialog } from "@/components/dialogs/InputDialog";
 import { NestedPlanAccordionCTA } from "./NestedPlanAccordionCTA";
 
 export const TodaoPlanList = ({
   tag,
   onTextSubmit,
+  energyCap,
+  currentEffortTotal,
 }: {
   tag: string | null;
-  onTextSubmit: (label: string, catId?: number) => void;
+  onTextSubmit: (label: string, cat?: PlanningCategory) => void;
+  energyCap: number;
+  currentEffortTotal: number;
 }) => {
   const db = useSQLiteContext();
   const [categories, setCategories] = useState<PlanningCategories>([]);
@@ -44,7 +48,12 @@ export const TodaoPlanList = ({
         <View style={{ gap: 15, marginBottom: 100 }}>
           {categories.map((cat) => (
             <Card key={cat.id} style={{ paddingHorizontal: 10 }}>
-              <NestedPlanAccordionCTA onTextSubmit={onTextSubmit} cat={cat} />
+              <NestedPlanAccordionCTA
+                onTextSubmit={onTextSubmit}
+                cat={cat}
+                energyCap={energyCap}
+                currentEffortTotal={currentEffortTotal}
+              />
             </Card>
           ))}
         </View>

@@ -7,6 +7,7 @@ export type PlanningCategory = {
   parentLabel: string;
   lastDone: string;
   repeatFreq: number | null;
+  effort: number;
 };
 
 export type PlanningCategories = PlanningCategory[];
@@ -17,11 +18,13 @@ export type DailyTodo = {
   completed: boolean;
   timelineId: number;
   catId: number;
+  effort: number;
 };
 
 export type TodoTimelineItem = {
   date: string;
   id: number;
+  energyCap: number;
 };
 
 export type TodoTimeline = TodoTimelineItem[];
@@ -38,4 +41,5 @@ export type RoutineItem = {
   label: string;
   routineId: number;
   catId?: number;
+  effort: number;
 };

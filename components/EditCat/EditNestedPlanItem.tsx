@@ -4,8 +4,9 @@ import { Checkbox, Text, TextInput } from "react-native-paper";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { PlanningCategories, PlanningCategory } from "@/types/types";
-import { InputDialog } from "../InputDialog";
+import { InputDialog } from "../dialogs/InputDialog";
 import { Link } from "expo-router";
+import { EditCatDialog } from "../dialogs/EditCatDialog";
 
 export const EditNestedPlanItem = ({
   cat,
@@ -48,11 +49,11 @@ export const EditNestedPlanItem = ({
     );
   };
 
-  const handleEditLabel = async (label: string) => {
-    await db.runAsync("UPDATE planning_categories SET label = ? WHERE id = ?", [
-      label,
-      cat.id,
-    ]);
+  const handleEditLabel = async (label: string, effort: number) => {
+    await db.runAsync(
+      "UPDATE planning_categories SET label = ?, effort = ? WHERE id = ?",
+      [label, effort, cat.id]
+    );
     reloadParent();
   };
 
@@ -115,10 +116,12 @@ export const EditNestedPlanItem = ({
             />
           ))}
       </View>
-      <InputDialog
+      <EditCatDialog
         isVisible={dialogVisible}
         onDismiss={() => setDialogVisible(false)}
-        onTextSubmit={handleEditLabel}
+        onSubmit={handleEditLabel}
+        effort={cat.effort}
+        label={cat.label}
       />
     </>
   );

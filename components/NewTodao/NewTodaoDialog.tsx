@@ -1,24 +1,40 @@
-import { StyleSheet, View } from "react-native";
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
 import { useRef, useState } from "react";
-import { Button, Modal, Portal, Text, TextInput } from "react-native-paper";
+import {
+  Button,
+  Modal,
+  Portal,
+  Text,
+  TextInput,
+  ToggleButton,
+} from "react-native-paper";
 import { TodaoTagViews } from "./TodaoTagViews";
+import { PlanningCategory } from "@/types/types";
+import { EffortOptionsInput } from "../effortManagement/EffortOptionsInput/EffortOptionsInput";
+import { Colors } from "@/constants/Colors";
 
 export const NewTodaoDialog = ({
   isVisible,
   onDismiss,
   onTextSubmit,
+  energyCap,
+  currentEffortTotal,
 }: {
   isVisible: boolean;
   onDismiss: () => void;
-  onTextSubmit: (label: string, catId?: number) => void;
+  onTextSubmit: (label: string, cat?: PlanningCategory) => void;
+  energyCap: number;
+  currentEffortTotal: number;
 }) => {
   const [todaoText, setTodaoText] = useState("");
+  const [todaoEffort, setTodaoEffort] = useState(0);
   const input = useRef(null);
 
-  const handleUpdateChecked = () => {
-    onTextSubmit(todaoText);
+  const handleNewTodo = () => {
+    onTextSubmit(todaoText, { effort: todaoEffort } as PlanningCategory);
     setTodaoText("");
-    input.current.clear();
+    (input as any).current.clear();
+    setTodaoEffort(0);
   };
 
   return (
@@ -28,53 +44,68 @@ export const NewTodaoDialog = ({
         onDismiss={onDismiss}
         style={{
           height: "100%",
-          paddingTop: 100,
           width: "100%",
-          backgroundColor: "black",
+          backgroundColor: Colors.dark.background,
         }}
       >
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: 40,
-            paddingHorizontal: 15,
-          }}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-          <Text variant="displayMedium">New Todao</Text>
-          <Button mode="contained" onPress={onDismiss}>
-            X
-          </Button>
-        </View>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            columnGap: 15,
-            marginBottom: 20,
-            paddingHorizontal: 15,
-          }}
-        >
-          <TextInput
-            style={{ width: "70%" }}
-            label="Todo"
-            ref={input}
-            defaultValue={todaoText}
-            onChangeText={(text) => setTodaoText(text)}
-          />
-          <Button
-            mode="contained"
-            onPress={handleUpdateChecked}
-            style={{ width: "25%" }}
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+
+              paddingHorizontal: 15,
+            }}
           >
-            Add
-          </Button>
-        </View>
-        <TodaoTagViews onTextSubmit={onTextSubmit} />
+            <Text variant="displayMedium">New Todao</Text>
+            <Button mode="contained" onPress={onDismiss}>
+              X
+            </Button>
+          </View>
+          <Text
+            style={{ paddingHorizontal: 15, fontSize: 16, marginBottom: 30 }}
+          >
+            {currentEffortTotal}/{energyCap}
+          </Text>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              columnGap: 15,
+              marginBottom: 10,
+              paddingHorizontal: 15,
+            }}
+          >
+            <TextInput
+              style={{ width: "70%" }}
+              label="Todo"
+              ref={input}
+              defaultValue={todaoText}
+              onChangeText={(text) => setTodaoText(text)}
+            />
+            <Button
+              mode="contained"
+              onPress={handleNewTodo}
+              style={{ width: "25%" }}
+            >
+              Add
+            </Button>
+          </View>
+          <View style={{ paddingHorizontal: 15, marginBottom: 10 }}>
+            <EffortOptionsInput value={todaoEffort} onChange={setTodaoEffort} />
+          </View>
+          <TodaoTagViews
+            onTextSubmit={onTextSubmit}
+            energyCap={energyCap}
+            currentEffortTotal={currentEffortTotal}
+          />
+        </KeyboardAvoidingView>
       </Modal>
     </Portal>
   );

@@ -1,23 +1,9 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { StyleSheet, Image, Platform, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import {
-  Button,
-  Card,
-  Divider,
-  FAB,
-  List,
-  Text,
-  TextInput,
-} from "react-native-paper";
+import { Button, Card, Divider, Text, TextInput } from "react-native-paper";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
-import { PlanningCategories, PlanningCategory } from "@/types/types";
-import { NestedPlanAccordion } from "@/components/NestedPlanAccordion";
-import { InputDialog } from "@/components/InputDialog";
+import { PlanningCategory } from "@/types/types";
 import { useLocalSearchParams } from "expo-router";
 import { EditNestedPlanItem } from "@/components/EditCat/EditNestedPlanItem";
 

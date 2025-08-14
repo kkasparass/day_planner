@@ -1,12 +1,12 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 
-import { Card, FAB } from "react-native-paper";
+import { Button, Card, FAB } from "react-native-paper";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { PlanningCategories, PlanningCategory } from "@/types/types";
 import { NestedPlanAccordion } from "@/components/NestedPlanAccordion";
-import { InputDialog } from "@/components/InputDialog";
+import { InputDialog } from "@/components/dialogs/InputDialog";
 
 export const PlanList = ({ tag }: { tag: string | null }) => {
   const db = useSQLiteContext();

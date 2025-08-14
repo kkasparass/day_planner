@@ -8,7 +8,7 @@ import { Button, Divider, FAB, List, Text } from "react-native-paper";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { PlanningCategories, PlanningCategory } from "@/types/types";
-import { InputDialog } from "./InputDialog";
+import { InputDialog } from "./dialogs/InputDialog";
 import { Link } from "expo-router";
 
 export const NestedPlanAccordion = ({

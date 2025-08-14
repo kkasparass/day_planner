@@ -9,8 +9,12 @@ import { TodaoPlanList } from "./TodaoPlanList";
 
 export const TodaoTagViews = ({
   onTextSubmit,
+  energyCap,
+  currentEffortTotal,
 }: {
-  onTextSubmit: (label: string, catId?: number) => void;
+  onTextSubmit: (label: string, cat?: PlanningCategory) => void;
+  energyCap: number;
+  currentEffortTotal: number;
 }) => {
   const db = useSQLiteContext();
   const [tags, setTags] = useState<(string | null)[]>([]);
@@ -34,7 +38,13 @@ export const TodaoTagViews = ({
         labels={tags.map((tag) => (tag === null ? "all" : tag))}
       >
         {tags.map((tag) => (
-          <TodaoPlanList onTextSubmit={onTextSubmit} tag={tag} key={tag} />
+          <TodaoPlanList
+            onTextSubmit={onTextSubmit}
+            tag={tag}
+            key={tag}
+            energyCap={energyCap}
+            currentEffortTotal={currentEffortTotal}
+          />
         ))}
       </SwipeableTabs>
     </View>

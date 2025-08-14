@@ -17,7 +17,7 @@ import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { Routine as RoutineT, Routines } from "@/types/types";
 import { NestedPlanAccordion } from "@/components/NestedPlanAccordion";
-import { InputDialog } from "@/components/InputDialog";
+import { InputDialog } from "@/components/dialogs/InputDialog";
 import { PlanList } from "@/components/PlanList";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SwipeableTabs from "@/components/SwipeTabs/SwipeableTabs";

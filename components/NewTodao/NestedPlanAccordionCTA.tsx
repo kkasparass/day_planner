@@ -22,9 +22,13 @@ const resolveDaysOver = (repeatFreq: number, lastDone: Date | null): number => {
 export const NestedPlanAccordionCTA = ({
   cat,
   onTextSubmit,
+  energyCap,
+  currentEffortTotal,
 }: {
   cat: PlanningCategory;
-  onTextSubmit: (label: string, catId?: number) => void;
+  onTextSubmit: (label: string, cat?: PlanningCategory) => void;
+  energyCap: number;
+  currentEffortTotal: number;
 }) => {
   const [selected, setselected] = useState(true);
   const db = useSQLiteContext();
@@ -74,13 +78,16 @@ export const NestedPlanAccordionCTA = ({
           </Text>
         ) : (
           <AddFromPlanButton
-            onPress={() => onTextSubmit(cat.label, cat.id)}
+            onPress={() => onTextSubmit(cat.label, cat)}
             label={cat.label}
             lastDone={cat.lastDone ? new Date(cat.lastDone).toDateString() : ""}
+            effort={cat.effort}
             daysOver={resolveDaysOver(
               cat.repeatFreq ?? 0,
               cat.lastDone ? new Date(cat.lastDone) : null
             )}
+            energyCap={energyCap}
+            currentEffortTotal={currentEffortTotal}
           />
         )}
       </View>
@@ -92,6 +99,8 @@ export const NestedPlanAccordionCTA = ({
                 onTextSubmit={onTextSubmit}
                 cat={child}
                 key={child.id}
+                energyCap={energyCap}
+                currentEffortTotal={currentEffortTotal}
               />
             ))}
         </View>

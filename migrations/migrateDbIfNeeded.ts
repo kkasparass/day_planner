@@ -8,9 +8,10 @@ import { addRepeatFreqColumnMigration } from "./6_add_repeat_freq_to_cat";
 import { reapeatFreqSetValueMigration } from "./7_reapeat_freq_set_value";
 import { createRoutinesTableMigration } from "./8_routines_table";
 import { createRoutineItemsTableMigration } from "./9_add_routine_items_table";
+import { addEffortValuesMigration } from "./10_add_effort_values";
 
 export const migrateDbIfNeeded = async (db: SQLiteDatabase) => {
-  const DATABASE_VERSION = 10;
+  const DATABASE_VERSION = 11;
   let { user_version: currentDbVersion } = (await db.getFirstAsync<{
     user_version: number;
   }>("PRAGMA user_version")) as {
@@ -58,6 +59,10 @@ export const migrateDbIfNeeded = async (db: SQLiteDatabase) => {
   if (currentDbVersion === 9) {
     await createRoutineItemsTableMigration(db);
     currentDbVersion = 10;
+  }
+  if (currentDbVersion === 10) {
+    await addEffortValuesMigration(db);
+    currentDbVersion = 11;
   }
 
   await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);

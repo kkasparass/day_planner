@@ -16,7 +16,7 @@ import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { PlanningCategories, PlanningCategory } from "@/types/types";
 import { NestedPlanAccordion } from "@/components/NestedPlanAccordion";
-import { InputDialog } from "@/components/InputDialog";
+import { InputDialog } from "@/components/dialogs/InputDialog";
 import { PlanList } from "@/components/PlanList";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SwipeableTabs from "@/components/SwipeTabs/SwipeableTabs";
@@ -33,7 +33,7 @@ export default function TabTwoScreen() {
       const result = await db.getAllAsync<{ tag: string | null }>(
         `SELECT tag FROM planning_categories GROUP BY tag;`
       );
-      setTags(result.map(({ tag }) => tag));
+      setTags(result.length < 1 ? [null] : result.map(({ tag }) => tag));
     }
     if (reloadDB) {
       setup();

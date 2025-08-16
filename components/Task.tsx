@@ -3,7 +3,7 @@ import { DailyTodo } from "../types/types";
 import { useState } from "react";
 import { Badge, Button, Checkbox, IconButton, Text } from "react-native-paper";
 import { useSQLiteContext } from "expo-sqlite";
-import { EditCatDialog } from "./dialogs/EditCatDialog";
+import { LabelEffortDialog } from "./dialogs/LabelEffortDialog";
 
 export const TodayTask = ({
   todo,
@@ -103,7 +103,7 @@ export const TodayTask = ({
         {catId && <IconButton icon="check" onPress={handlePlanCompleted} />}
         <IconButton icon="close" onPress={handleDelete} />
       </View>
-      <EditCatDialog
+      <LabelEffortDialog
         isVisible={dialogVisible}
         onDismiss={() => setDialogVisible(false)}
         onSubmit={handleEditLabel}

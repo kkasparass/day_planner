@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, View } from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button, Card, Divider, Text } from "react-native-paper";
 import {
   DailyTodo,
@@ -26,6 +26,14 @@ export const Routine = ({
   const [newDialogVisible, setNewDialogVisible] = useState(false);
   const [timelineListdialogVisible, setTimelineListDialogVisible] =
     useState(false);
+
+  const totalRoutineEffort = useMemo(
+    () =>
+      routineItems.reduce((sum, todo) => {
+        return sum + todo.effort;
+      }, 0),
+    [routineItems]
+  );
 
   useEffect(() => {
     async function setup() {
@@ -88,7 +96,9 @@ export const Routine = ({
           alignItems: "center",
         }}
       >
-        <Text>{routine.title}</Text>
+        <Text>
+          {routine.title} | {totalRoutineEffort}
+        </Text>
         <Button
           mode="contained"
           style={{ width: 25 }}

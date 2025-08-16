@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { PlanningCategories, PlanningCategory } from "@/types/types";
 import { NestedPlanAccordion } from "@/components/NestedPlanAccordion";
 import { InputDialog } from "@/components/dialogs/InputDialog";
+import { LabelEffortDialog } from "./dialogs/LabelEffortDialog";
 
 export const PlanList = ({ tag }: { tag: string | null }) => {
   const db = useSQLiteContext();
@@ -29,12 +30,13 @@ export const PlanList = ({ tag }: { tag: string | null }) => {
     }
   }, [reloadDB]);
 
-  const onNewParentCategory = async (label: string) => {
+  const onNewParentCategory = async (label: string, effort: number) => {
     const res = await db.runAsync(
-      "INSERT INTO planning_categories (label, tag, repeatFreq) VALUES (?, ?, ?)",
+      "INSERT INTO planning_categories (label, tag, repeatFreq, effort) VALUES (?, ?, ?, ?)",
       label,
       tag,
-      0
+      0,
+      effort
     );
     setReloadDB(true);
   };
@@ -63,10 +65,13 @@ export const PlanList = ({ tag }: { tag: string | null }) => {
         style={styles.fab}
         onPress={() => setDialogVisible(true)}
       />
-      <InputDialog
+      <LabelEffortDialog
         isVisible={dialogVisible}
         onDismiss={() => setDialogVisible(false)}
-        onTextSubmit={onNewParentCategory}
+        onSubmit={onNewParentCategory}
+        effort={0}
+        label=""
+        title="New Cat"
       />
     </View>
   );

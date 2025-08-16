@@ -4,7 +4,7 @@ import { Button, Dialog, Portal, Text, TextInput } from "react-native-paper";
 import { InputDialog } from "./InputDialog";
 import { EffortOptionsInput } from "../effortManagement/EffortOptionsInput/EffortOptionsInput";
 
-export const EditCatDialog = ({
+export const LabelEffortDialog = ({
   isVisible,
   onDismiss,
   onSubmit,
@@ -24,6 +24,10 @@ export const EditCatDialog = ({
   const handleSubmit = async (labelText: string) => {
     await onSubmit(labelText, effortValue);
   };
+
+  if (!isVisible) {
+    return;
+  }
 
   return (
     <InputDialog

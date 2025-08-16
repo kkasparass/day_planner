@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { PlanningCategories, PlanningCategory } from "@/types/types";
 import { InputDialog } from "../dialogs/InputDialog";
 import { Link } from "expo-router";
-import { EditCatDialog } from "../dialogs/EditCatDialog";
+import { LabelEffortDialog } from "../dialogs/LabelEffortDialog";
 
 export const EditNestedPlanItem = ({
   cat,
@@ -91,7 +91,7 @@ export const EditNestedPlanItem = ({
                 }
               }
             >
-              {cat.label}
+              {cat.label} | {cat.effort}
             </Text>
           </Pressable>
         </View>
@@ -116,7 +116,7 @@ export const EditNestedPlanItem = ({
             />
           ))}
       </View>
-      <EditCatDialog
+      <LabelEffortDialog
         isVisible={dialogVisible}
         onDismiss={() => setDialogVisible(false)}
         onSubmit={handleEditLabel}

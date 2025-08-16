@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { PlanningCategories, PlanningCategory } from "@/types/types";
 import { InputDialog } from "./dialogs/InputDialog";
 import { Link } from "expo-router";
+import { LabelEffortDialog } from "./dialogs/LabelEffortDialog";
 
 export const NestedPlanAccordion = ({
   isBase,
@@ -39,13 +40,14 @@ export const NestedPlanAccordion = ({
     }
   }, [reloadDB]);
 
-  const onNewCategory = async (label: string) => {
+  const onNewCategory = async (label: string, effort: number) => {
     const res = await db.runAsync(
-      "INSERT INTO planning_categories (label, parent, parentLabel, repeatFreq) VALUES (?, ?, ?, ?)",
+      "INSERT INTO planning_categories (label, parent, parentLabel, repeatFreq, effort) VALUES (?, ?, ?, ?, ?)",
       label,
       cat.id,
       cat.label,
-      0
+      0,
+      effort
     );
     setReloadDB(true);
   };
@@ -83,7 +85,8 @@ export const NestedPlanAccordion = ({
             }),
           }}
         >
-          {hasChidlren && <Text>{selected ? "- " : "+ "}</Text>} {cat.label}
+          {hasChidlren && <Text>{selected ? "- " : "+ "}</Text>}
+          {`${cat.label} | ${cat.effort}`}
         </Text>
         <View
           style={{
@@ -122,10 +125,13 @@ export const NestedPlanAccordion = ({
             ))}
         </View>
       )}
-      <InputDialog
+      <LabelEffortDialog
         isVisible={dialogVisible}
         onDismiss={() => setDialogVisible(false)}
-        onTextSubmit={onNewCategory}
+        onSubmit={onNewCategory}
+        effort={0}
+        label=""
+        title="New Cat"
       />
     </Pressable>
   );

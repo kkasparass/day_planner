@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Badge, Button, Checkbox, IconButton, Text } from "react-native-paper";
 import { useSQLiteContext } from "expo-sqlite";
 import { RoutineItem as RoutineItemT } from "@/types/types";
-import { EditCatDialog } from "../dialogs/EditCatDialog";
+import { LabelEffortDialog } from "../dialogs/LabelEffortDialog";
 
 export const RoutineItem = ({
   routineItem,
@@ -63,7 +63,7 @@ export const RoutineItem = ({
       </View>
 
       <IconButton icon="close" onPress={handleDelete} />
-      <EditCatDialog
+      <LabelEffortDialog
         isVisible={dialogVisible}
         onDismiss={() => setDialogVisible(false)}
         onSubmit={handleEditLabel}

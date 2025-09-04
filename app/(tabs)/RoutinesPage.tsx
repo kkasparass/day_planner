@@ -65,6 +65,9 @@ export default function RoutinesPage() {
         isVisible={dialogVisible}
         onDismiss={() => setDialogVisible(false)}
         onTextSubmit={handleNewRoute}
+        title="Add Routine"
+        inputLabel="Routine Title"
+        triggerLabel="Add"
       />
     </ParallaxScrollView>
   );

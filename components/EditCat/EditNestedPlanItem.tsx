@@ -122,6 +122,8 @@ export const EditNestedPlanItem = ({
         onSubmit={handleEditLabel}
         effort={cat.effort}
         label={cat.label}
+        title="Edit Cat"
+        inputLabel="Cat"
       />
     </>
   );

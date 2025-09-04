@@ -1,12 +1,11 @@
-import { Pressable, StyleSheet, View } from "react-native";
-import { useEffect, useMemo, useState } from "react";
-import { Button, Card, Divider, Text } from "react-native-paper";
-import { DailyTodo, PlanningCategory, TodoTimelineItem } from "@/types/types";
-import { useSQLiteContext } from "expo-sqlite";
+import { View } from "react-native";
+import { Button, Card, Divider, ProgressBar, Text } from "react-native-paper";
+import { PlanningCategory, TodoTimelineItem } from "@/types/types";
 import { TodayTask } from "../Task";
 import { InputDialog } from "../dialogs/InputDialog";
 import { NewTodaoDialog } from "../NewTodao/NewTodaoDialog";
 import { STATUS_COLORS } from "@/constants/Colors";
+import { useTimelineItem } from "./useTimelineItem";
 
 export const TimelineItem = ({
   timelineItem,
@@ -15,70 +14,23 @@ export const TimelineItem = ({
   timelineItem: TodoTimelineItem;
   reloadTimeline: () => void;
 }) => {
-  const db = useSQLiteContext();
-  const [dayTodos, setDayTodods] = useState<DailyTodo[]>([]);
-  const [reloadDB, setReloadDB] = useState(true);
-  const [dialogVisible, setDialogVisible] = useState(false);
-  const [enegryDialogVisible, setEnergyDialogVisible] = useState(false);
-
-  const { date, energyCap, id } = timelineItem;
-
-  const totalTodosEffort = useMemo(
-    () =>
-      dayTodos.reduce((sum, todo) => {
-        return sum + todo.effort;
-      }, 0),
-    [dayTodos]
-  );
-  const energyColor = useMemo(() => {
-    if (totalTodosEffort > energyCap) {
-      return STATUS_COLORS.alert;
-    }
-    if (totalTodosEffort === energyCap) {
-      return STATUS_COLORS.warning;
-    }
-    return STATUS_COLORS.success;
-  }, [totalTodosEffort, energyCap]);
-
-  useEffect(() => {
-    async function setup() {
-      const result = await db.getAllAsync<DailyTodo>(
-        `SELECT * FROM daily_todos WHERE timelineId = ${id}
-         ORDER BY
-          id ASC;`
-      );
-      setDayTodods(result);
-    }
-    if (reloadDB) {
-      setup();
-      setReloadDB(false);
-    }
-  }, [reloadDB]);
-
-  const handleDeleteDay = async () => {
-    await db.runAsync("DELETE FROM todao_timeline WHERE id = $id", {
-      $id: id,
-    });
-    reloadTimeline();
-  };
-
-  const onTextSubmit = async (label: string, cat?: PlanningCategory) => {
-    await db.runAsync(
-      "INSERT INTO daily_todos (label, timelineId, catId, effort) VALUES (?, ?, ?, ?)",
-      label,
-      id,
-      cat?.id ? cat.id : null,
-      cat?.effort || 0
-    );
-  };
-
-  const onEnergyCapChange = async (newValue: string) => {
-    await db.runAsync("UPDATE todao_timeline SET energyCap = ? WHERE id = ?", [
-      newValue,
-      id,
-    ]);
-    reloadTimeline();
-  };
+  const { date, energyCap } = timelineItem;
+  const {
+    dayTodos,
+    enegryDialogVisible,
+    todaoDialogVisible,
+    totalTodosEffort,
+    dayProgressValue,
+    energyColor,
+    openEnergyDialog,
+    closeEnergyDialog,
+    openTodaoDialog,
+    closeTodaoDialog,
+    handleDeleteDay,
+    onTextSubmit,
+    onEnergyCapChange,
+    handleReloadDB,
+  } = useTimelineItem({ timelineItem, reloadTimeline });
 
   return (
     <View
@@ -107,9 +59,7 @@ export const TimelineItem = ({
           <Button
             mode="contained"
             style={{ backgroundColor: energyColor }}
-            onPress={() => {
-              setEnergyDialogVisible(true);
-            }}
+            onPress={openEnergyDialog}
           >
             {energyCap}
           </Button>
@@ -122,6 +72,11 @@ export const TimelineItem = ({
           </Button>
         </View>
       </View>
+      <ProgressBar
+        progress={dayProgressValue}
+        color={STATUS_COLORS.success}
+        visible={energyCap > 0}
+      />
       <Card>
         <Card.Content
           style={{
@@ -134,13 +89,13 @@ export const TimelineItem = ({
               todo={todo}
               key={todo.id}
               dayDate={date}
-              reloadTodos={() => setReloadDB(true)}
+              reloadTodos={handleReloadDB}
             />
           ))}
           <Button
             mode="contained"
             style={{ marginTop: 20 }}
-            onPress={() => setDialogVisible(true)}
+            onPress={openTodaoDialog}
           >
             + Add
           </Button>
@@ -149,33 +104,26 @@ export const TimelineItem = ({
       <Divider />
       <InputDialog
         isVisible={enegryDialogVisible}
-        onDismiss={() => setEnergyDialogVisible(false)}
+        onDismiss={closeEnergyDialog}
         onTextSubmit={onEnergyCapChange}
         title="Edit Energy"
         keyboardType="numeric"
         defaultValue={String(energyCap)}
         triggerLabel="edit"
+        inputLabel="Energy Value"
       ></InputDialog>
       <NewTodaoDialog
         energyCap={energyCap}
         currentEffortTotal={totalTodosEffort}
-        isVisible={dialogVisible}
+        isVisible={todaoDialogVisible}
         onDismiss={() => {
-          setDialogVisible(false);
+          closeTodaoDialog;
         }}
         onTextSubmit={(label: string, cat?: PlanningCategory) => {
           onTextSubmit(label, cat);
-          setReloadDB(true);
+          handleReloadDB;
         }}
       />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  text: {
-    fontSize: 28,
-    lineHeight: 32,
-    marginTop: -6,
-  },
-});

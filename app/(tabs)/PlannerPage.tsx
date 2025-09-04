@@ -1,22 +1,8 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import {
-  StyleSheet,
-  Image,
-  Platform,
-  View,
-  ScrollView,
-  Dimensions,
-} from "react-native";
+import { StyleSheet } from "react-native";
 
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { Button, Card, Divider, FAB, List, Text } from "react-native-paper";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
-import { PlanningCategories, PlanningCategory } from "@/types/types";
-import { NestedPlanAccordion } from "@/components/NestedPlanAccordion";
-import { InputDialog } from "@/components/dialogs/InputDialog";
 import { PlanList } from "@/components/PlanList";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SwipeableTabs from "@/components/SwipeTabs/SwipeableTabs";

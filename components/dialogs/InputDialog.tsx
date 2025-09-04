@@ -6,6 +6,7 @@ export const InputDialog = ({
   defaultValue,
   title,
   triggerLabel,
+  inputLabel,
   isVisible,
   onDismiss,
   onTextSubmit,
@@ -20,6 +21,7 @@ export const InputDialog = ({
   onTextSubmit: (label: string) => void;
   children?: ReactNode;
   keyboardType?: KeyboardTypeOptions;
+  inputLabel?: string;
 }) => {
   const [todaoText, setTodaoText] = useState(defaultValue ?? "");
 
@@ -51,7 +53,7 @@ export const InputDialog = ({
           >
             <TextInput
               style={{ width: 230 }}
-              label="Todo"
+              label={inputLabel ?? "Todo"}
               keyboardType={keyboardType}
               defaultValue={defaultValue ?? todaoText}
               onChangeText={(text) => setTodaoText(text)}

@@ -6,7 +6,6 @@ import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { PlanningCategories, PlanningCategory } from "@/types/types";
 import { NestedPlanAccordion } from "@/components/NestedPlanAccordion";
-import { InputDialog } from "@/components/dialogs/InputDialog";
 import { LabelEffortDialog } from "./dialogs/LabelEffortDialog";
 
 export const PlanList = ({ tag }: { tag: string | null }) => {
@@ -72,6 +71,8 @@ export const PlanList = ({ tag }: { tag: string | null }) => {
         effort={0}
         label=""
         title="New Cat"
+        triggerLabel="add"
+        inputLabel="Cat Name"
       />
     </View>
   );

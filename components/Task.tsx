@@ -98,6 +98,7 @@ export const TodayTask = ({
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
+          justifyContent: "flex-end",
         }}
       >
         {catId && <IconButton icon="check" onPress={handlePlanCompleted} />}

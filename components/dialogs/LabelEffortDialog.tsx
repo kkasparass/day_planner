@@ -11,6 +11,8 @@ export const LabelEffortDialog = ({
   effort,
   label,
   title,
+  triggerLabel,
+  inputLabel,
 }: {
   isVisible: boolean;
   onDismiss: () => void;
@@ -18,6 +20,8 @@ export const LabelEffortDialog = ({
   effort: number;
   label: string;
   title?: string;
+  triggerLabel?: string;
+  inputLabel?: string;
 }) => {
   const [effortValue, setEffortValue] = useState(effort);
 
@@ -36,7 +40,8 @@ export const LabelEffortDialog = ({
       onTextSubmit={handleSubmit}
       title={title ?? "Edit Cat"}
       defaultValue={label}
-      triggerLabel="edit"
+      triggerLabel={triggerLabel ?? "edit"}
+      inputLabel={inputLabel}
     >
       <View
         style={{

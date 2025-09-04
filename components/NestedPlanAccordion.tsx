@@ -132,6 +132,8 @@ export const NestedPlanAccordion = ({
         effort={0}
         label=""
         title="New Cat"
+        triggerLabel="add"
+        inputLabel="Cat Name"
       />
     </Pressable>
   );

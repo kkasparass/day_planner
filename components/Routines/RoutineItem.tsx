@@ -70,6 +70,7 @@ export const RoutineItem = ({
         effort={routineItem.effort}
         label={routineItem.label}
         title="Edit item"
+        inputLabel="Routine Title"
       />
     </View>
   );

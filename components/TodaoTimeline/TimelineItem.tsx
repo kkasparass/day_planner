@@ -116,12 +116,10 @@ export const TimelineItem = ({
         energyCap={energyCap}
         currentEffortTotal={totalTodosEffort}
         isVisible={todaoDialogVisible}
-        onDismiss={() => {
-          closeTodaoDialog;
-        }}
+        onDismiss={closeTodaoDialog}
         onTextSubmit={(label: string, cat?: PlanningCategory) => {
           onTextSubmit(label, cat);
-          handleReloadDB;
+          handleReloadDB();
         }}
       />
     </View>

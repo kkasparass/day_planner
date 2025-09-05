@@ -145,7 +145,7 @@ export const Routine = ({
         }}
         onTextSubmit={onTextSubmit}
         energyCap={100}
-        currentEffortTotal={0}
+        currentEffortTotal={totalRoutineEffort}
       />
       <TimelineListDialog
         isVisible={timelineListdialogVisible}

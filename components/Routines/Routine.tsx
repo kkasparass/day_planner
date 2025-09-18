@@ -1,17 +1,17 @@
-import { Pressable, StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { useEffect, useMemo, useState } from "react";
 import { Button, Card, Divider, Text } from "react-native-paper";
 import {
-  DailyTodo,
   Routine as RoutineT,
   RoutineItem as RoutineItemT,
-  TodoTimelineItem,
   PlanningCategory,
 } from "@/types/types";
 import { useSQLiteContext } from "expo-sqlite";
 import { NewTodaoDialog } from "../NewTodao/NewTodaoDialog";
 import { RoutineItem } from "./RoutineItem";
 import { TimelineListDialog } from "./TimelineListDialog";
+import { useDispatch } from "react-redux";
+import { reloadTodao } from "@/store/slices/todaosSlice";
 
 export const Routine = ({
   routine,
@@ -26,6 +26,8 @@ export const Routine = ({
   const [newDialogVisible, setNewDialogVisible] = useState(false);
   const [timelineListdialogVisible, setTimelineListDialogVisible] =
     useState(false);
+
+  const dispatch = useDispatch();
 
   const totalRoutineEffort = useMemo(
     () =>
@@ -79,6 +81,7 @@ export const Routine = ({
       );
     });
     setTimelineListDialogVisible(false);
+    dispatch(reloadTodao(timelineId));
   };
 
   return (

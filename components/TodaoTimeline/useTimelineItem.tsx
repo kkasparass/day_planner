@@ -1,7 +1,10 @@
 import { STATUS_COLORS } from "@/constants/Colors";
+import { reloadTodao, todaoLoaded } from "@/store/slices/todaosSlice";
+import { RootState } from "@/store/store";
 import { DailyTodo, PlanningCategory, TodoTimelineItem } from "@/types/types";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export const useTimelineItem = ({
   timelineItem,
@@ -10,13 +13,14 @@ export const useTimelineItem = ({
   timelineItem: TodoTimelineItem;
   reloadTimeline: () => void;
 }) => {
+  const { energyCap, id } = timelineItem;
+  const reloadDB =
+    useSelector((state: RootState) => state.todaos.queries)[id] ?? true;
+  const dispatch = useDispatch();
   const db = useSQLiteContext();
   const [dayTodos, setDayTodods] = useState<DailyTodo[]>([]);
-  const [reloadDB, setReloadDB] = useState(true);
   const [todaoDialogVisible, setTodaoDialogVisible] = useState(false);
   const [enegryDialogVisible, setEnergyDialogVisible] = useState(false);
-
-  const { energyCap, id } = timelineItem;
 
   const { totalTodosEffort, totalCompletedEffort } = useMemo(
     () =>
@@ -62,7 +66,7 @@ export const useTimelineItem = ({
     }
     if (reloadDB) {
       setup();
-      setReloadDB(false);
+      dispatch(todaoLoaded(id));
     }
   }, [reloadDB]);
 
@@ -97,7 +101,7 @@ export const useTimelineItem = ({
   const openTodaoDialog = () => setTodaoDialogVisible(true);
   const closeTodaoDialog = () => setTodaoDialogVisible(false);
 
-  const handleReloadDB = () => setReloadDB(true);
+  const handleReloadDB = () => dispatch(reloadTodao(id));
 
   return {
     dayTodos,

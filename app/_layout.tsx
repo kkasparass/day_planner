@@ -8,11 +8,13 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
+import { Provider } from "react-redux";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { SQLiteProvider } from "expo-sqlite";
 import { PaperProvider } from "react-native-paper";
 import { migrateDbIfNeeded } from "@/migrations/migrateDbIfNeeded";
+import { store } from "@/store/store";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -34,17 +36,19 @@ export default function RootLayout() {
   }
 
   return (
-    <SQLiteProvider databaseName="test.db" onInit={migrateDbIfNeeded}>
-      <PaperProvider>
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        </ThemeProvider>
-      </PaperProvider>
-    </SQLiteProvider>
+    <Provider store={store}>
+      <SQLiteProvider databaseName="test.db" onInit={migrateDbIfNeeded}>
+        <PaperProvider>
+          <ThemeProvider
+            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          >
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+          </ThemeProvider>
+        </PaperProvider>
+      </SQLiteProvider>
+    </Provider>
   );
 }

@@ -24,6 +24,12 @@ export const TimelineListDialog = ({
   const [reloadDB, setReloadDB] = useState(true);
 
   useEffect(() => {
+    if (isVisible) {
+      setReloadDB(true);
+    }
+  }, [isVisible]);
+
+  useEffect(() => {
     async function setup() {
       const result = await db.getAllAsync<TodoTimelineItem>(
         "SELECT * FROM todao_timeline ORDER BY id DESC"

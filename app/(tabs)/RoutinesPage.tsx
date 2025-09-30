@@ -7,7 +7,7 @@ import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { Routine as RoutineT, Routines } from "@/types/types";
 import { InputDialog } from "@/components/dialogs/InputDialog";
-import { Routine } from "@/components/Routines/Routine";
+import { Routine } from "@/components/Routines/Routine/Routine";
 
 export default function RoutinesPage() {
   const db = useSQLiteContext();

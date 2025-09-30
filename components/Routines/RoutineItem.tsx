@@ -14,11 +14,11 @@ import { LabelEffortDialog } from "../dialogs/LabelEffortDialog";
 
 export const RoutineItem = ({
   routineItem,
-  reloadTodos,
+  reloadRoutine,
   onSelectRoutine,
 }: {
   routineItem: RoutineItemT;
-  reloadTodos: () => void;
+  reloadRoutine: () => void;
   onSelectRoutine: (specificRoutine: number) => void;
 }) => {
   const db = useSQLiteContext();
@@ -28,7 +28,7 @@ export const RoutineItem = ({
 
   const handleDelete = async () => {
     await db.runAsync("DELETE FROM routine_items WHERE id = $id", { $id: id });
-    reloadTodos();
+    reloadRoutine();
   };
 
   const handleEditLabel = async (label: string, effort: number) => {
@@ -36,7 +36,7 @@ export const RoutineItem = ({
       "UPDATE routine_items SET label = ?, effort = ? WHERE id = ?",
       [label, effort, id]
     );
-    reloadTodos();
+    reloadRoutine();
   };
 
   return (

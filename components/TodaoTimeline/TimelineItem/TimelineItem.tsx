@@ -1,18 +1,16 @@
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Button, Card, Divider, ProgressBar, Text } from "react-native-paper";
 import { PlanningCategory, TodoTimelineItem } from "@/types/types";
-import { TodayTask } from "../Task";
-import { InputDialog } from "../dialogs/InputDialog";
-import { NewTodaoDialog } from "../NewTodao/NewTodaoDialog";
 import { STATUS_COLORS } from "@/constants/Colors";
 import { useTimelineItem } from "./useTimelineItem";
+import { TodayTask } from "@/components/Task";
+import { InputDialog } from "@/components/dialogs/InputDialog";
+import { NewTodaoDialog } from "@/components/NewTodao/NewTodaoDialog";
 
 export const TimelineItem = ({
   timelineItem,
-  reloadTimeline,
 }: {
   timelineItem: TodoTimelineItem;
-  reloadTimeline: () => void;
 }) => {
   const { date, energyCap } = timelineItem;
   const {
@@ -30,32 +28,13 @@ export const TimelineItem = ({
     onTextSubmit,
     onEnergyCapChange,
     handleReloadDB,
-  } = useTimelineItem({ timelineItem, reloadTimeline });
+  } = useTimelineItem({ timelineItem });
 
   return (
-    <View
-      style={{
-        display: "flex",
-        gap: 15,
-      }}
-    >
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+    <View style={styles.itemBlock}>
+      <View style={styles.itemHeader}>
         <Text>{new Date(date).toDateString()}</Text>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 8,
-          }}
-        >
+        <View style={styles.itemsActionsContainer}>
           <Button
             mode="contained"
             style={{ backgroundColor: energyColor }}
@@ -78,12 +57,7 @@ export const TimelineItem = ({
         visible={energyCap > 0}
       />
       <Card>
-        <Card.Content
-          style={{
-            display: "flex",
-            gap: 10,
-          }}
-        >
+        <Card.Content style={styles.todaoCardContainer}>
           {dayTodos.map((todo) => (
             <TodayTask
               todo={todo}
@@ -125,3 +99,27 @@ export const TimelineItem = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  itemBlock: {
+    display: "flex",
+    gap: 16,
+    marginBottom: 16,
+  },
+  itemHeader: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  itemsActionsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  todaoCardContainer: {
+    display: "flex",
+    gap: 10,
+  },
+});

@@ -1,17 +1,16 @@
 import { STATUS_COLORS } from "@/constants/Colors";
 import { reloadTodao, todaoLoaded } from "@/store/slices/todaosSlice";
+import { reloadTimeline as reloadTodaoTimeline } from "@/store/slices/todaoTimelineListSlice";
 import { RootState } from "@/store/store";
 import { DailyTodo, PlanningCategory, TodoTimelineItem } from "@/types/types";
 import { useSQLiteContext } from "expo-sqlite";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export const useTimelineItem = ({
   timelineItem,
-  reloadTimeline,
 }: {
   timelineItem: TodoTimelineItem;
-  reloadTimeline: () => void;
 }) => {
   const { energyCap, id } = timelineItem;
   const reloadDB =
@@ -69,6 +68,8 @@ export const useTimelineItem = ({
       dispatch(todaoLoaded(id));
     }
   }, [reloadDB]);
+
+  const reloadTimeline = useCallback(() => dispatch(reloadTodaoTimeline()), []);
 
   const handleDeleteDay = async () => {
     await db.runAsync("DELETE FROM todao_timeline WHERE id = $id", {

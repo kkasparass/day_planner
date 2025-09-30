@@ -7,7 +7,7 @@ import { PlanList } from "@/components/PlanList";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SwipeableTabs from "@/components/SwipeTabs/SwipeableTabs";
 
-export default function TabTwoScreen() {
+export default function PlannerPage() {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const db = useSQLiteContext();

@@ -22,6 +22,9 @@ export const Routine = ({
 }) => {
   const db = useSQLiteContext();
   const [routineItems, setRoutineItems] = useState<RoutineItemT[]>([]);
+  const [selectedRoutines, setSelectedRoutines] = useState<
+    number[] | undefined
+  >(undefined);
   const [reloadDB, setReloadDB] = useState(true);
   const [newDialogVisible, setNewDialogVisible] = useState(false);
   const [timelineListdialogVisible, setTimelineListDialogVisible] =
@@ -70,8 +73,18 @@ export const Routine = ({
     setReloadDB(true);
   };
 
+  const onSelectSpecificRoutine = (routineId: number) => {
+    setSelectedRoutines([routineId]);
+    setTimelineListDialogVisible(true);
+  };
+
   const onMergeIntoTimelineItem = async (timelineId: number) => {
-    routineItems.forEach(async (routineItem) => {
+    const filteredRoutineItems = selectedRoutines
+      ? routineItems.filter((routine) =>
+          selectedRoutines.some((id) => id === routine.id)
+        )
+      : routineItems;
+    filteredRoutineItems.forEach(async (routineItem) => {
       await db.runAsync(
         "INSERT INTO daily_todos (label, timelineId, catId, effort) VALUES (?, ?, ?, ?)",
         routineItem.label,
@@ -82,6 +95,7 @@ export const Routine = ({
     });
     setTimelineListDialogVisible(false);
     dispatch(reloadTodao(timelineId));
+    setSelectedRoutines(undefined);
   };
 
   return (
@@ -122,6 +136,7 @@ export const Routine = ({
               routineItem={routineItem}
               key={routineItem.id}
               reloadTodos={() => setReloadDB(true)}
+              onSelectRoutine={onSelectSpecificRoutine}
             />
           ))}
           <Button

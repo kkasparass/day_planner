@@ -1,6 +1,13 @@
 import { Pressable, StyleSheet, View } from "react-native";
 import { useState } from "react";
-import { Badge, Button, Checkbox, IconButton, Text } from "react-native-paper";
+import {
+  Badge,
+  Button,
+  Checkbox,
+  IconButton,
+  Text,
+  TouchableRipple,
+} from "react-native-paper";
 import { useSQLiteContext } from "expo-sqlite";
 import { RoutineItem as RoutineItemT } from "@/types/types";
 import { LabelEffortDialog } from "../dialogs/LabelEffortDialog";
@@ -8,9 +15,11 @@ import { LabelEffortDialog } from "../dialogs/LabelEffortDialog";
 export const RoutineItem = ({
   routineItem,
   reloadTodos,
+  onSelectRoutine,
 }: {
   routineItem: RoutineItemT;
   reloadTodos: () => void;
+  onSelectRoutine: (specificRoutine: number) => void;
 }) => {
   const db = useSQLiteContext();
   const [dialogVisible, setDialogVisible] = useState(false);
@@ -40,27 +49,34 @@ export const RoutineItem = ({
         alignItems: "center",
       }}
     >
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: 10,
-          alignItems: "center",
-          position: "relative",
+      <TouchableRipple
+        rippleColor="rgba(255, 255, 255, 0.32)"
+        onPress={() => setDialogVisible(true)}
+        onLongPress={() => {
+          onSelectRoutine(id);
         }}
       >
-        {effort > 0 && (
-          <Badge
-            style={{ position: "absolute", top: -7, right: -15 }}
-            size={17}
-          >
-            {effort}
-          </Badge>
-        )}
-        <Pressable onPress={() => setDialogVisible(true)}>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            position: "relative",
+            flex: 1,
+          }}
+        >
+          {effort > 0 && (
+            <Badge
+              style={{ position: "absolute", top: 0, right: -15 }}
+              size={17}
+            >
+              {effort}
+            </Badge>
+          )}
+
           <Text style={{ width: 250 }}>{routineItem.label}</Text>
-        </Pressable>
-      </View>
+        </View>
+      </TouchableRipple>
 
       <IconButton icon="close" onPress={handleDelete} />
       <LabelEffortDialog

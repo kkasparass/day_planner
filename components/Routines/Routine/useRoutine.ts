@@ -51,7 +51,10 @@ export const useRoutine = ({
   const closeNewRoutineDialog = () => setNewDialogVisible(false);
 
   const openMergeDialog = () => setTimelineListDialogVisible(true);
-  const closeMergeDialog = () => setTimelineListDialogVisible(false);
+  const closeMergeDialog = () => {
+    setTimelineListDialogVisible(false);
+    setSelectedRoutines(undefined);
+  };
 
   const handleDeleteRoutine = async () => {
     await db.runAsync("DELETE FROM routines WHERE id = $id", {

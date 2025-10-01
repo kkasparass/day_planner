@@ -1,39 +1,21 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { StyleSheet, FlatList } from "react-native";
-
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { Button, Divider } from "react-native-paper";
-import { useSQLiteContext } from "expo-sqlite";
-import { useEffect, useState } from "react";
-import { Routine as RoutineT, Routines } from "@/types/types";
 import { InputDialog } from "@/components/dialogs/InputDialog";
 import { Routine } from "@/components/Routines/Routine/Routine";
+import { useRoutinesPage } from "@/components/Routines/useRoutinesPage";
 
 export default function RoutinesPage() {
-  const db = useSQLiteContext();
-  const [todaoTimeline, setTodaoTimeline] = useState<Routines>();
-  const [reloadDB, setReloadDB] = useState(true);
-  const [dialogVisible, setDialogVisible] = useState(false);
+  const {
+    routines,
+    newRoutinedialogVisible,
+    handleNewRoute,
+    openNewRoutineDialog,
+    closeNewRoutineDialog,
+    handleReloadDB,
+  } = useRoutinesPage();
 
-  useEffect(() => {
-    async function setup() {
-      const result = await db.getAllAsync<RoutineT>(
-        "SELECT * FROM routines ORDER BY id DESC"
-      );
-      setTodaoTimeline(result);
-    }
-    if (reloadDB) {
-      setup();
-      setReloadDB(false);
-    }
-  }, [reloadDB]);
-
-  const handleNewRoute = async (title: string) => {
-    await db.runAsync("INSERT INTO routines (title) VALUES (?)", title ?? "");
-    setReloadDB(true);
-  };
-
-  if (!todaoTimeline) {
+  if (!routines) {
     return null;
   }
 
@@ -41,8 +23,8 @@ export default function RoutinesPage() {
     <ParallaxScrollView title="Routines">
       <Button
         mode="contained"
-        style={{ width: "100%", height: 40 }}
-        onPress={() => setDialogVisible(true)}
+        style={styles.newRoutineButton}
+        onPress={openNewRoutineDialog}
       >
         New Routine
       </Button>
@@ -50,20 +32,20 @@ export default function RoutinesPage() {
       <Divider />
 
       <FlatList
-        data={todaoTimeline}
+        data={routines}
         renderItem={({ item: routine }) => (
           <Routine
             routine={routine}
             key={routine.id}
-            reloadRoutines={() => setReloadDB(true)}
+            reloadRoutines={handleReloadDB}
           />
         )}
         keyExtractor={(item) => `${item.id}`}
       />
 
       <InputDialog
-        isVisible={dialogVisible}
-        onDismiss={() => setDialogVisible(false)}
+        isVisible={newRoutinedialogVisible}
+        onDismiss={closeNewRoutineDialog}
         onTextSubmit={handleNewRoute}
         title="Add Routine"
         inputLabel="Routine Title"
@@ -74,20 +56,5 @@ export default function RoutinesPage() {
 }
 
 const styles = StyleSheet.create({
-  fab: {
-    position: "absolute",
-    margin: 16,
-    right: 0,
-    bottom: 0,
-  },
-  headerImage: {
-    color: "#808080",
-    bottom: -90,
-    left: -35,
-    position: "absolute",
-  },
-  titleContainer: {
-    flexDirection: "row",
-    gap: 8,
-  },
+  newRoutineButton: { width: "100%", height: 40 },
 });

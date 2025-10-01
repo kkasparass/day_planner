@@ -1,8 +1,8 @@
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Button, Card, Divider, Text } from "react-native-paper";
 import { NewTodaoDialog } from "../../NewTodao/NewTodaoDialog";
-import { RoutineItem } from "../RoutineItem";
-import { TimelineListDialog } from "../TimelineListDialog";
+import { RoutineItem } from "../RoutineItem/RoutineItem";
+import { TimelineListDialog } from "../TimelineListDialog/TimelineListDialog";
 import { useRoutine } from "./useRoutine";
 import { Routine as RoutineT } from "@/types/types";
 
@@ -33,20 +33,8 @@ export const Routine = ({
   });
 
   return (
-    <View
-      style={{
-        display: "flex",
-        gap: 15,
-      }}
-    >
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+    <View style={styles.routineListItem}>
+      <View style={styles.itemHeader}>
         <Text>
           {routine.title} | {totalRoutineEffort}
         </Text>
@@ -59,12 +47,7 @@ export const Routine = ({
         </Button>
       </View>
       <Card>
-        <Card.Content
-          style={{
-            display: "flex",
-            gap: 10,
-          }}
-        >
+        <Card.Content style={styles.cardContent}>
           {routineItems.map((routineItem) => (
             <RoutineItem
               routineItem={routineItem}
@@ -104,3 +87,21 @@ export const Routine = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  routineListItem: {
+    display: "flex",
+    gap: 15,
+    marginBottom: 16,
+  },
+  itemHeader: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  cardContent: {
+    display: "flex",
+    gap: 10,
+  },
+});

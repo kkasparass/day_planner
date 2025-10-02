@@ -121,9 +121,10 @@ export const EditNestedPlanItem = ({
         onDismiss={() => setDialogVisible(false)}
         onSubmit={handleEditLabel}
         effort={cat.effort}
-        label={cat.label}
+        defaultValue={cat.label}
         title="Edit Cat"
         inputLabel="Cat"
+        triggerLabel="edit"
       />
     </>
   );

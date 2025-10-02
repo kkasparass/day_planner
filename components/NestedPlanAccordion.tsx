@@ -130,7 +130,7 @@ export const NestedPlanAccordion = ({
         onDismiss={() => setDialogVisible(false)}
         onSubmit={onNewCategory}
         effort={0}
-        label=""
+        defaultValue=""
         title="New Cat"
         triggerLabel="add"
         inputLabel="Cat Name"

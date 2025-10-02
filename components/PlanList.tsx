@@ -69,7 +69,7 @@ export const PlanList = ({ tag }: { tag: string | null }) => {
         onDismiss={() => setDialogVisible(false)}
         onSubmit={onNewParentCategory}
         effort={0}
-        label=""
+        defaultValue=""
         title="New Cat"
         triggerLabel="add"
         inputLabel="Cat Name"

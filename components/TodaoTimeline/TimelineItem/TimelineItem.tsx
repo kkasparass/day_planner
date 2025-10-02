@@ -3,9 +3,9 @@ import { Button, Card, Divider, ProgressBar, Text } from "react-native-paper";
 import { PlanningCategory, TodoTimelineItem } from "@/types/types";
 import { STATUS_COLORS } from "@/constants/Colors";
 import { useTimelineItem } from "./useTimelineItem";
-import { TodayTask } from "@/components/Task";
 import { InputDialog } from "@/components/dialogs/InputDialog";
 import { NewTodaoDialog } from "@/components/NewTodao/NewTodaoDialog";
+import { Task } from "@/components/Task/Task";
 
 export const TimelineItem = ({
   timelineItem,
@@ -59,7 +59,7 @@ export const TimelineItem = ({
       <Card>
         <Card.Content style={styles.todaoCardContainer}>
           {dayTodos.map((todo) => (
-            <TodayTask
+            <Task
               todo={todo}
               key={todo.id}
               dayDate={date}

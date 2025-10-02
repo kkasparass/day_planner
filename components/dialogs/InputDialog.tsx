@@ -1,18 +1,8 @@
 import { KeyboardTypeOptions, StyleSheet, View } from "react-native";
-import { ReactNode, useState } from "react";
+import { FC, ReactNode, useState } from "react";
 import { Button, Dialog, Portal, TextInput } from "react-native-paper";
 
-export const InputDialog = ({
-  defaultValue,
-  title,
-  triggerLabel,
-  inputLabel,
-  isVisible,
-  onDismiss,
-  onTextSubmit,
-  children,
-  keyboardType,
-}: {
+export type InputDialogProps = {
   defaultValue?: string;
   title?: string;
   triggerLabel?: string;
@@ -22,6 +12,18 @@ export const InputDialog = ({
   children?: ReactNode;
   keyboardType?: KeyboardTypeOptions;
   inputLabel?: string;
+};
+
+export const InputDialog: FC<InputDialogProps> = ({
+  defaultValue,
+  title,
+  triggerLabel,
+  inputLabel,
+  isVisible,
+  onDismiss,
+  onTextSubmit,
+  children,
+  keyboardType,
 }) => {
   const [todaoText, setTodaoText] = useState(defaultValue ?? "");
 
@@ -35,22 +37,8 @@ export const InputDialog = ({
     <Portal>
       <Dialog visible={isVisible} onDismiss={onDismiss}>
         <Dialog.Title>{title ?? "Text input"}</Dialog.Title>
-        <Dialog.Content
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 15,
-          }}
-        >
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              columnGap: 15,
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
+        <Dialog.Content style={styles.dialogContainer}>
+          <View style={styles.inputRow}>
             <TextInput
               style={{ width: 230 }}
               label={inputLabel ?? "Todo"}
@@ -70,9 +58,16 @@ export const InputDialog = ({
 };
 
 const styles = StyleSheet.create({
-  text: {
-    fontSize: 28,
-    lineHeight: 32,
-    marginTop: -6,
+  dialogContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 15,
+  },
+  inputRow: {
+    display: "flex",
+    flexDirection: "row",
+    columnGap: 15,
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 });

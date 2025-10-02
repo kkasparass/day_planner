@@ -47,9 +47,10 @@ export const RoutineItem = ({
         onDismiss={closeEditDialog}
         onSubmit={handleEditLabel}
         effort={routineItem.effort}
-        label={routineItem.label}
+        defaultValue={routineItem.label}
         title="Edit item"
         inputLabel="Routine Title"
+        triggerLabel="edit"
       />
     </View>
   );

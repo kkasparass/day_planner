@@ -4,8 +4,12 @@ import { useEffect, useState } from "react";
 
 export const useChildCategories = ({
   parent,
+  reloadParent = () => {},
+  showCompleted,
 }: {
   parent: PlanningCategory;
+  reloadParent?: () => void;
+  showCompleted?: boolean;
 }) => {
   const [selected, setselected] = useState(true);
   const db = useSQLiteContext();
@@ -15,7 +19,9 @@ export const useChildCategories = ({
   useEffect(() => {
     async function setup() {
       const result = await db.getAllAsync<PlanningCategory>(
-        `SELECT * FROM planning_categories WHERE parent = ${parent.id} AND completed=0`
+        `SELECT * FROM planning_categories WHERE parent = ${parent.id} ${
+          showCompleted ? "" : "AND completed=0"
+        }`
       );
       setCategories(result);
     }
@@ -33,5 +39,32 @@ export const useChildCategories = ({
 
   const hasChidlren = categories.length > 0;
 
-  return { selected, categories, hasChidlren, toggle, triggerReloadDB };
+  const addChildCategory = async (label: string, effort: number) => {
+    const res = await db.runAsync(
+      "INSERT INTO planning_categories (label, parent, parentLabel, repeatFreq, effort) VALUES (?, ?, ?, ?, ?)",
+      label,
+      parent.id,
+      parent.label,
+      0,
+      effort
+    );
+    triggerReloadDB();
+  };
+
+  const deleteCategory = async () => {
+    await db.runAsync("DELETE FROM planning_categories WHERE id = $id", {
+      $id: parent.id,
+    });
+    reloadParent();
+  };
+
+  return {
+    selected,
+    categories,
+    hasChidlren,
+    toggle,
+    triggerReloadDB,
+    addChildCategory,
+    deleteCategory,
+  };
 };

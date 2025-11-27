@@ -1,11 +1,10 @@
-import { View, Pressable } from "react-native";
-
-import { Checkbox, Text, TextInput } from "react-native-paper";
-import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
+import { View, Pressable, StyleSheet } from "react-native";
+import { Checkbox, Text, TextInput } from "react-native-paper";
 import { PlanningCategory } from "@/types/types";
-import { LabelEffortDialog } from "../dialogs/LabelEffortDialog";
 import { useChildCategories } from "@/hooks/useChildCategories";
+import { LabelEffortDialog } from "../dialogs/LabelEffortDialog";
+import { useCategoryMutations } from "./useCategoryMutations";
 
 export const EditNestedPlanItem = ({
   cat,
@@ -14,68 +13,27 @@ export const EditNestedPlanItem = ({
   cat: PlanningCategory;
   reloadParent: () => void;
 }) => {
-  const db = useSQLiteContext();
   const { hasChidlren, categories, triggerReloadDB } = useChildCategories({
     parent: cat,
+    showCompleted: true,
   });
   const [dialogVisible, setDialogVisible] = useState(false);
   const [repeatFreqFreqInput, setRepeatFreqInput] = useState(cat.repeatFreq);
-
-  const handleUpdateChecked = async () => {
-    await db.runAsync(
-      "UPDATE planning_categories SET completed = ? WHERE id = ?",
-      [!cat.completed, cat.id]
-    );
-    reloadParent();
-  };
-
-  const handleUpdateRepeatFreq = async (input: number) => {
-    await db.runAsync(
-      "UPDATE planning_categories SET repeatFreq = ? WHERE id = ?",
-      [input, cat.id]
-    );
-  };
-
-  const handleEditLabel = async (label: string, effort: number) => {
-    await db.runAsync(
-      "UPDATE planning_categories SET label = ?, effort = ? WHERE id = ?",
-      [label, effort, cat.id]
-    );
-    reloadParent();
-  };
+  const { updateChecked, updateRepeatFreq, editLabel } = useCategoryMutations({
+    category: cat,
+    reloadParent,
+  });
 
   return (
     <>
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginVertical: 5,
-        }}
-      >
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 10,
-            alignItems: "center",
-          }}
-        >
+      <View style={styles.inputRowContainer}>
+        <View style={styles.labelContainer}>
           <Checkbox
             status={cat.completed ? "checked" : "unchecked"}
-            onPress={handleUpdateChecked}
+            onPress={updateChecked}
           />
           <Pressable onPress={() => setDialogVisible(true)}>
-            <Text
-              style={
-                cat.completed && {
-                  textDecorationLine: "line-through",
-                  textDecorationStyle: "solid",
-                }
-              }
-            >
+            <Text style={cat.completed && styles.completedText}>
               {cat.label} | {cat.effort}
             </Text>
           </Pressable>
@@ -86,7 +44,7 @@ export const EditNestedPlanItem = ({
           keyboardType="numeric"
           defaultValue={repeatFreqFreqInput ? `${repeatFreqFreqInput}` : ""}
           onChangeText={(text) => {
-            handleUpdateRepeatFreq(Number(text));
+            updateRepeatFreq(Number(text));
             setRepeatFreqInput(Number(text));
           }}
         />
@@ -104,7 +62,7 @@ export const EditNestedPlanItem = ({
       <LabelEffortDialog
         isVisible={dialogVisible}
         onDismiss={() => setDialogVisible(false)}
-        onSubmit={handleEditLabel}
+        onSubmit={editLabel}
         effort={cat.effort}
         defaultValue={cat.label}
         title="Edit Cat"
@@ -114,3 +72,23 @@ export const EditNestedPlanItem = ({
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  inputRowContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginVertical: 5,
+  },
+  labelContainer: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 10,
+    alignItems: "center",
+  },
+  completedText: {
+    textDecorationLine: "line-through",
+    textDecorationStyle: "solid",
+  },
+});

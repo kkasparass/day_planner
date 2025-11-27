@@ -14,7 +14,6 @@ export default function PlannerPage() {
   return (
     <SafeAreaView>
       <SwipeableTabs
-        onSwipe={(x) => setSelectedIndex(x)}
         selectedIndex={selectedIndex}
         labels={tags.map((tag) => (tag === null ? "all" : tag))}
       >
@@ -25,22 +24,3 @@ export default function PlannerPage() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  fab: {
-    position: "absolute",
-    margin: 16,
-    right: 0,
-    bottom: 0,
-  },
-  headerImage: {
-    color: "#808080",
-    bottom: -90,
-    left: -35,
-    position: "absolute",
-  },
-  titleContainer: {
-    flexDirection: "row",
-    gap: 8,
-  },
-});

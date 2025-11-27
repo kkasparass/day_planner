@@ -22,5 +22,18 @@ export const useParentCategories = ({ tag }: { tag?: string | null }) => {
     }
   }, [reloadDB]);
 
-  return { categories };
+  const addParentCaregory = async (label: string, effort: number) => {
+    await db.runAsync(
+      "INSERT INTO planning_categories (label, tag, repeatFreq, effort) VALUES (?, ?, ?, ?)",
+      label,
+      tag ?? null,
+      0,
+      effort
+    );
+    setReloadDB(true);
+  };
+
+  const refreshDB = () => setReloadDB(true);
+
+  return { categories, addParentCaregory, refreshDB };
 };

@@ -1,14 +1,8 @@
-import { Tabs } from "expo-router";
 import React from "react";
-
+import { Tabs } from "expo-router";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { PaperProvider } from "react-native-paper";
-import { SQLiteDatabase, SQLiteProvider } from "expo-sqlite";
-import { initialMigration } from "@/migrations/0_initial";
-import { addCategoriesTableMigration } from "@/migrations/1_add_categories";
-import { addTagColumnMigration } from "@/migrations/3_add_tag_column";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();

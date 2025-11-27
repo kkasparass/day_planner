@@ -13,8 +13,8 @@ export const LabelEffortDialog = ({
 }) => {
   const [effortValue, setEffortValue] = useState(effort);
 
-  const handleSubmit = async (labelText: string) => {
-    await onSubmit(labelText, effortValue);
+  const handleSubmit = (labelText: string) => {
+    onSubmit(labelText, effortValue);
   };
 
   if (!isVisible) {

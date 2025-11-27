@@ -18,7 +18,6 @@ export const TodaoTagViews = ({
   return (
     <View style={{ height: 550 }}>
       <SwipeableTabs
-        onSwipe={(x) => setSelectedIndex(x)}
         selectedIndex={selectedIndex}
         labels={tags.map((tag) => (tag === null ? "all" : tag))}
       >

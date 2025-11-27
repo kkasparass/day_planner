@@ -6,26 +6,10 @@ import { useEffect, useState } from "react";
 import { PlanList } from "@/components/PlanList";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SwipeableTabs from "@/components/SwipeTabs/SwipeableTabs";
+import { useCategoryTags } from "@/hooks/useCategoryTags";
 
 export default function PlannerPage() {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const db = useSQLiteContext();
-  const [tags, setTags] = useState<(string | null)[]>([]);
-  const [reloadDB, setReloadDB] = useState(true);
-
-  useEffect(() => {
-    async function setup() {
-      const result = await db.getAllAsync<{ tag: string | null }>(
-        `SELECT tag FROM planning_categories GROUP BY tag;`
-      );
-      setTags(result.length < 1 ? [null] : result.map(({ tag }) => tag));
-    }
-    if (reloadDB) {
-      setup();
-      setReloadDB(false);
-    }
-  }, [reloadDB]);
+  const { tags, selectedIndex, setSelectedIndex } = useCategoryTags();
 
   return (
     <SafeAreaView>

@@ -1,12 +1,9 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
-import { Card, FAB } from "react-native-paper";
-import { useSQLiteContext } from "expo-sqlite";
-import { useEffect, useState } from "react";
-import { PlanningCategories, PlanningCategory } from "@/types/types";
-import { InputDialog } from "@/components/dialogs/InputDialog";
-import { NestedPlanAccordionCTA } from "./NestedPlanAccordionCTA";
+import { Card } from "react-native-paper";
+import { PlanningCategory } from "@/types/types";
+import { NestedPlanAccordionCTA } from "./NestedPlanAccordionCTA/NestedPlanAccordionCTA";
+import { useParentCategories } from "@/hooks/useParentCategories";
 
 export const TodaoPlanList = ({
   tag,
@@ -19,33 +16,12 @@ export const TodaoPlanList = ({
   energyCap: number;
   currentEffortTotal: number;
 }) => {
-  const db = useSQLiteContext();
-  const [categories, setCategories] = useState<PlanningCategories>([]);
-  const [reloadDB, setReloadDB] = useState(true);
-
-  useEffect(() => {
-    async function setup() {
-      const result = await db.getAllAsync<PlanningCategory>(
-        `SELECT * FROM planning_categories WHERE parent IS NULL AND ${
-          tag === null ? "tag is NULL" : `tag="${tag}" AND completed=0`
-        }`
-      );
-      setCategories(result);
-    }
-    if (reloadDB) {
-      setup();
-      setReloadDB(false);
-    }
-  }, [reloadDB]);
+  const { categories } = useParentCategories({ tag });
 
   return (
-    <View
-      style={{
-        height: "100%",
-      }}
-    >
+    <View style={{ height: "100%" }}>
       <ScrollView>
-        <View style={{ gap: 15, marginBottom: 100 }}>
+        <View style={styles.listContainer}>
           {categories.map((cat) => (
             <Card key={cat.id} style={{ paddingHorizontal: 10 }}>
               <NestedPlanAccordionCTA
@@ -63,20 +39,5 @@ export const TodaoPlanList = ({
 };
 
 const styles = StyleSheet.create({
-  fab: {
-    position: "absolute",
-    margin: 16,
-    right: 0,
-    bottom: 0,
-  },
-  headerImage: {
-    color: "#808080",
-    bottom: -90,
-    left: -35,
-    position: "absolute",
-  },
-  titleContainer: {
-    flexDirection: "row",
-    gap: 8,
-  },
+  listContainer: { gap: 16, marginBottom: 100 },
 });

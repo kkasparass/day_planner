@@ -1,14 +1,7 @@
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
 import { useRef, useState } from "react";
-import {
-  Button,
-  Modal,
-  Portal,
-  Text,
-  TextInput,
-  ToggleButton,
-} from "react-native-paper";
-import { TodaoTagViews } from "./TodaoTagViews";
+import { Button, Modal, Portal, Text, TextInput } from "react-native-paper";
+import { TodaoTagViews } from "./TodaoTagViews/TodaoTagViews";
 import { PlanningCategory } from "@/types/types";
 import { EffortOptionsInput } from "../effortManagement/EffortOptionsInput/EffortOptionsInput";
 import { Colors } from "@/constants/Colors";
@@ -42,46 +35,21 @@ export const NewTodaoDialog = ({
       <Modal
         visible={isVisible}
         onDismiss={onDismiss}
-        style={{
-          height: "100%",
-          width: "100%",
-          backgroundColor: Colors.dark.background,
-        }}
+        style={styles.modalContainer}
       >
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-
-              paddingHorizontal: 15,
-            }}
-          >
+          <View style={styles.titleHeaderContainer}>
             <Text variant="displayMedium">New Todao</Text>
             <Button mode="contained" onPress={onDismiss}>
               X
             </Button>
           </View>
-          <Text
-            style={{ paddingHorizontal: 15, fontSize: 16, marginBottom: 30 }}
-          >
+          <Text style={styles.efforTest}>
             {currentEffortTotal}/{energyCap}
           </Text>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              columnGap: 15,
-              marginBottom: 10,
-              paddingHorizontal: 15,
-            }}
-          >
+          <View style={styles.labelInputContainer}>
             <TextInput
               style={{ width: "70%" }}
               label="Todo"
@@ -112,9 +80,26 @@ export const NewTodaoDialog = ({
 };
 
 const styles = StyleSheet.create({
-  text: {
-    fontSize: 28,
-    lineHeight: 32,
-    marginTop: -6,
+  modalContainer: {
+    height: "100%",
+    width: "100%",
+    backgroundColor: Colors.dark.background,
+  },
+  titleHeaderContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 15,
+  },
+  efforTest: { paddingHorizontal: 15, fontSize: 16, marginBottom: 30 },
+  labelInputContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    columnGap: 15,
+    marginBottom: 10,
+    paddingHorizontal: 15,
   },
 });

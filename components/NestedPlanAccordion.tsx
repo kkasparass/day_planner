@@ -1,16 +1,11 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { StyleSheet, Image, Platform, View, Pressable } from "react-native";
-
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { Button, Divider, FAB, List, Text } from "react-native-paper";
+import { useState } from "react";
+import { View, Pressable } from "react-native";
+import { Button, Text } from "react-native-paper";
 import { useSQLiteContext } from "expo-sqlite";
-import { useEffect, useState } from "react";
-import { PlanningCategories, PlanningCategory } from "@/types/types";
-import { InputDialog } from "./dialogs/InputDialog";
+import { PlanningCategory } from "@/types/types";
 import { Link } from "expo-router";
 import { LabelEffortDialog } from "./dialogs/LabelEffortDialog";
+import { useChildCategories } from "@/hooks/useChildCategories";
 
 export const NestedPlanAccordion = ({
   isBase,
@@ -21,24 +16,12 @@ export const NestedPlanAccordion = ({
   reloadParent: () => void;
   isBase?: boolean;
 }) => {
-  const [selected, setselected] = useState(false);
+  const { toggle, hasChidlren, selected, categories, triggerReloadDB } =
+    useChildCategories({
+      parent: cat,
+    });
   const db = useSQLiteContext();
-  const [categories, setCategories] = useState<PlanningCategories>([]);
-  const [reloadDB, setReloadDB] = useState(true);
   const [dialogVisible, setDialogVisible] = useState(false);
-
-  useEffect(() => {
-    async function setup() {
-      const result = await db.getAllAsync<PlanningCategory>(
-        `SELECT * FROM planning_categories WHERE parent = ${cat.id}`
-      );
-      setCategories(result);
-    }
-    if (reloadDB) {
-      setup();
-      setReloadDB(false);
-    }
-  }, [reloadDB]);
 
   const onNewCategory = async (label: string, effort: number) => {
     const res = await db.runAsync(
@@ -49,7 +32,7 @@ export const NestedPlanAccordion = ({
       0,
       effort
     );
-    setReloadDB(true);
+    triggerReloadDB();
   };
 
   const handleDelete = async () => {
@@ -58,12 +41,6 @@ export const NestedPlanAccordion = ({
     });
     reloadParent();
   };
-
-  const toggle = () => {
-    setselected((value) => !value);
-  };
-
-  const hasChidlren = categories.length > 0;
 
   return (
     <Pressable onPress={toggle}>
@@ -120,7 +97,7 @@ export const NestedPlanAccordion = ({
               <NestedPlanAccordion
                 cat={child}
                 key={child.id}
-                reloadParent={() => setReloadDB(true)}
+                reloadParent={triggerReloadDB}
               />
             ))}
         </View>

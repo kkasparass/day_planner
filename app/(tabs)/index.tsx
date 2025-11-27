@@ -4,9 +4,6 @@ import { Button, Divider } from "react-native-paper";
 import { TimelineItem } from "@/components/TodaoTimeline/TimelineItem/TimelineItem";
 import { useTodaoTimeline } from "@/components/TodaoTimeline/useTodaoTimeline";
 
-// Add an energy level for each day, and effort values for todaos + planned items. The effort cap will be displayed by the border of the todao?
-// We'll want to warn the todao list Of the current totals already added. All of the values should be updatable for each day
-
 export default function TodaoPage() {
   const { todaoTimeline, handleNewDay } = useTodaoTimeline();
 

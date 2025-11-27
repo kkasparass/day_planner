@@ -2,11 +2,10 @@ import { View, Pressable } from "react-native";
 
 import { Checkbox, Text, TextInput } from "react-native-paper";
 import { useSQLiteContext } from "expo-sqlite";
-import { useEffect, useState } from "react";
-import { PlanningCategories, PlanningCategory } from "@/types/types";
-import { InputDialog } from "../dialogs/InputDialog";
-import { Link } from "expo-router";
+import { useState } from "react";
+import { PlanningCategory } from "@/types/types";
 import { LabelEffortDialog } from "../dialogs/LabelEffortDialog";
+import { useChildCategories } from "@/hooks/useChildCategories";
 
 export const EditNestedPlanItem = ({
   cat,
@@ -16,23 +15,11 @@ export const EditNestedPlanItem = ({
   reloadParent: () => void;
 }) => {
   const db = useSQLiteContext();
-  const [categories, setCategories] = useState<PlanningCategories>([]);
-  const [reloadDB, setReloadDB] = useState(true);
+  const { hasChidlren, categories, triggerReloadDB } = useChildCategories({
+    parent: cat,
+  });
   const [dialogVisible, setDialogVisible] = useState(false);
   const [repeatFreqFreqInput, setRepeatFreqInput] = useState(cat.repeatFreq);
-
-  useEffect(() => {
-    async function setup() {
-      const result = await db.getAllAsync<PlanningCategory>(
-        `SELECT * FROM planning_categories WHERE parent = ${cat.id}`
-      );
-      setCategories(result);
-    }
-    if (reloadDB) {
-      setup();
-      setReloadDB(false);
-    }
-  }, [reloadDB]);
 
   const handleUpdateChecked = async () => {
     await db.runAsync(
@@ -56,8 +43,6 @@ export const EditNestedPlanItem = ({
     );
     reloadParent();
   };
-
-  const hasChidlren = categories.length > 0;
 
   return (
     <>
@@ -112,7 +97,7 @@ export const EditNestedPlanItem = ({
             <EditNestedPlanItem
               cat={child}
               key={child.id}
-              reloadParent={() => setReloadDB(true)}
+              reloadParent={triggerReloadDB}
             />
           ))}
       </View>

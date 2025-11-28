@@ -21,6 +21,15 @@ export const useTimelineItem = ({
   const [todaoDialogVisible, setTodaoDialogVisible] = useState(false);
   const [enegryDialogVisible, setEnergyDialogVisible] = useState(false);
 
+  const undoneTodos = useMemo(
+    () => dayTodos.filter(({ completed }) => !completed),
+    [dayTodos]
+  );
+  const completedTodos = useMemo(
+    () => dayTodos.filter(({ completed }) => completed),
+    [dayTodos]
+  );
+
   const { totalTodosEffort, totalCompletedEffort } = useMemo(
     () =>
       dayTodos.reduce(
@@ -105,7 +114,8 @@ export const useTimelineItem = ({
   const handleReloadDB = () => dispatch(reloadTodao(id));
 
   return {
-    dayTodos,
+    undoneTodos,
+    completedTodos,
     enegryDialogVisible,
     todaoDialogVisible,
     totalTodosEffort,

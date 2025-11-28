@@ -5,15 +5,28 @@ import { ThemedView } from "@/components/ThemedView";
 import { Appbar } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-type Props = PropsWithChildren<{ title: string }>;
+type Props = PropsWithChildren<{ title?: string; fullWidth?: boolean }>;
 
-export default function ParallaxScrollView({ children, title }: Props) {
+export default function ParallaxScrollView({
+  children,
+  title,
+  fullWidth,
+}: Props) {
   return (
     <SafeAreaView style={styles.container}>
-      <Appbar>
-        <Appbar.Content title={title} />
-      </Appbar>
-      <ThemedView style={styles.content}>{children}</ThemedView>
+      {title && (
+        <Appbar>
+          <Appbar.Content title={title} />
+        </Appbar>
+      )}
+      <ThemedView
+        style={{
+          ...styles.content,
+          ...(fullWidth && { paddingHorizontal: 0 }),
+        }}
+      >
+        {children}
+      </ThemedView>
     </SafeAreaView>
   );
 }
@@ -25,7 +38,7 @@ const styles = StyleSheet.create({
   content: {
     height: "100%",
     flex: 1,
-    padding: 25,
+    padding: 16,
     gap: 16,
     overflow: "hidden",
   },

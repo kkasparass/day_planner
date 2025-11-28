@@ -14,7 +14,8 @@ export const TimelineItem = ({
 }) => {
   const { date, energyCap } = timelineItem;
   const {
-    dayTodos,
+    undoneTodos,
+    completedTodos,
     enegryDialogVisible,
     todaoDialogVisible,
     totalTodosEffort,
@@ -58,7 +59,7 @@ export const TimelineItem = ({
       />
       <Card>
         <Card.Content style={styles.todaoCardContainer}>
-          {dayTodos.map((todo) => (
+          {undoneTodos.map((todo) => (
             <Task
               todo={todo}
               key={todo.id}
@@ -66,6 +67,19 @@ export const TimelineItem = ({
               reloadTodos={handleReloadDB}
             />
           ))}
+          {completedTodos.length > 0 && (
+            <>
+              <Divider />
+              {completedTodos.map((todo) => (
+                <Task
+                  todo={todo}
+                  key={todo.id}
+                  dayDate={date}
+                  reloadTodos={handleReloadDB}
+                />
+              ))}
+            </>
+          )}
           <Button
             mode="contained"
             style={{ marginTop: 20 }}

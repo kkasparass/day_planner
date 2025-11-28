@@ -4,6 +4,7 @@ import { Button, Card, Divider, Text, TextInput } from "react-native-paper";
 import { useLocalSearchParams } from "expo-router";
 import { EditNestedPlanItem } from "@/components/EditCat/EditNestedPlanItem";
 import { useSingleCategory } from "@/hooks/useSingleCategory";
+import ParallaxScrollView from "@/components/ParallaxScrollView";
 
 export default function CatEdit() {
   const { id } = useLocalSearchParams();
@@ -25,7 +26,7 @@ export default function CatEdit() {
   }
 
   return (
-    <>
+    <ParallaxScrollView fullWidth>
       <ScrollView>
         <Text style={{ marginTop: 15, marginBottom: 5 }}>
           Add plan tree tag
@@ -53,7 +54,7 @@ export default function CatEdit() {
           <EditNestedPlanItem cat={baseCategory} reloadParent={reloadDB} />
         </Card>
       </ScrollView>
-    </>
+    </ParallaxScrollView>
   );
 }
 

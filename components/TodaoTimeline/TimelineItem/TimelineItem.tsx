@@ -85,7 +85,7 @@ export const TimelineItem = ({
         defaultValue={String(energyCap)}
         triggerLabel="edit"
         inputLabel="Energy Value"
-      ></InputDialog>
+      />
       <NewTodaoDialog
         energyCap={energyCap}
         currentEffortTotal={totalTodosEffort}

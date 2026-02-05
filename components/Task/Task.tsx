@@ -40,12 +40,19 @@ export const Task = ({
           status={completed ? "checked" : "unchecked"}
           onPress={handleUpdateChecked}
         />
-        <Pressable onPress={openEditDialog}>
-          <Text style={{ width: 170 }}>{todo.label}</Text>
+        <Pressable
+          style={{ flexShrink: 1, flexGrow: 1 }}
+          onPress={openEditDialog}
+        >
+          <Text>{todo.label}</Text>
         </Pressable>
       </View>
       <View style={styles.taskActionsContainer}>
-        {catId && <IconButton icon="check" onPress={handlePlanCompleted} />}
+        {catId ? (
+          <IconButton icon="check" onPress={handlePlanCompleted} />
+        ) : (
+          <View style={{ width: 51 }} />
+        )}
         <IconButton icon="close" onPress={handleDelete} />
       </View>
       <LabelEffortDialog
@@ -75,8 +82,9 @@ const styles = StyleSheet.create({
     gap: 10,
     alignItems: "center",
     position: "relative",
+    flexShrink: 1,
   },
-  badge: { position: "absolute", top: -7, right: -15 },
+  badge: { position: "absolute", top: -7, right: -10 },
   taskActionsContainer: {
     display: "flex",
     flexDirection: "row",

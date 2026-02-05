@@ -33,7 +33,7 @@ export default function CatEdit() {
         </Text>
         <View style={styles.inputRowContainer}>
           <TextInput
-            style={{ width: "75%" }}
+            style={{ flexGrow: 1, flexShrink: 1 }}
             label="Tag"
             defaultValue={baseCategory?.tag ?? ""}
             onChangeText={(text) => setInputText(text)}
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   inputRowContainer: {
     display: "flex",
     flexDirection: "row",
-    columnGap: 15,
+    columnGap: 25,
     marginHorizontal: 15,
   },
 });

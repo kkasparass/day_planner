@@ -34,7 +34,7 @@ export const NestedPlanAccordion = ({
       <View style={styles.listItemContainer}>
         <Text
           style={{
-            width: 150,
+            flexShrink: 1,
             ...(cat.completed && styles.completedText),
           }}
         >

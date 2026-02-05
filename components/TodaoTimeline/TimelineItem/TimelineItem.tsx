@@ -34,7 +34,9 @@ export const TimelineItem = ({
   return (
     <View style={styles.itemBlock}>
       <View style={styles.itemHeader}>
-        <Text>{new Date(date).toDateString()}</Text>
+        <Text>
+          {new Date(date).toDateString()} | {totalTodosEffort}
+        </Text>
         <View style={styles.itemsActionsContainer}>
           <Button
             mode="contained"

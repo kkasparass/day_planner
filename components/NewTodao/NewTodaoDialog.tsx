@@ -51,7 +51,7 @@ export const NewTodaoDialog = ({
           </Text>
           <View style={styles.labelInputContainer}>
             <TextInput
-              style={{ width: "70%" }}
+              style={{ flexGrow: 1, flexShrink: 1 }}
               label="Todo"
               ref={input}
               defaultValue={todaoText}
@@ -60,7 +60,7 @@ export const NewTodaoDialog = ({
             <Button
               mode="contained"
               onPress={handleNewTodo}
-              style={{ width: "25%" }}
+              style={{ display: "flex", justifyContent: "center" }}
             >
               Add
             </Button>
@@ -96,9 +96,7 @@ const styles = StyleSheet.create({
   labelInputContainer: {
     display: "flex",
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    columnGap: 15,
+    columnGap: 25,
     marginBottom: 10,
     paddingHorizontal: 15,
   },

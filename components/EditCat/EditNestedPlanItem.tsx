@@ -32,14 +32,21 @@ export const EditNestedPlanItem = ({
             status={cat.completed ? "checked" : "unchecked"}
             onPress={updateChecked}
           />
-          <Pressable onPress={() => setDialogVisible(true)}>
-            <Text style={cat.completed && styles.completedText}>
+          <Pressable
+            style={{ flexShrink: 1 }}
+            onPress={() => setDialogVisible(true)}
+          >
+            <Text
+              style={{
+                ...(cat.completed && styles.completedText),
+              }}
+            >
               {cat.label} | {cat.effort}
             </Text>
           </Pressable>
         </View>
         <TextInput
-          style={{ width: "25%" }}
+          style={{ width: 110 }}
           label="RepeatFreq"
           keyboardType="numeric"
           defaultValue={repeatFreqFreqInput ? `${repeatFreqFreqInput}` : ""}
@@ -86,6 +93,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 10,
     alignItems: "center",
+    flexShrink: 1,
   },
   completedText: {
     textDecorationLine: "line-through",

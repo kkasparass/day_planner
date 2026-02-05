@@ -16,7 +16,7 @@ export const useTodaoTimeline = () => {
   useEffect(() => {
     async function setup() {
       const result = await db.getAllAsync<TodoTimelineItem>(
-        "SELECT * FROM todao_timeline ORDER BY id DESC LIMIT 14"
+        "SELECT * FROM todao_timeline ORDER BY id DESC LIMIT 14",
       );
       setTodaoTimeline(result);
     }
@@ -30,7 +30,7 @@ export const useTodaoTimeline = () => {
     await db.runAsync(
       "INSERT INTO todao_timeline (date, energyCap) VALUES (?, ?)",
       `${new Date()}`,
-      16
+      24,
     );
     dispatch(reloadTimeline());
   };

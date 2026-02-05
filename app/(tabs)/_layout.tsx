@@ -18,11 +18,8 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Todao",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "home" : "home-outline"}
-              color={color}
-            />
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name={"checkbox-outline"} color={color} />
           ),
         }}
       />
@@ -30,11 +27,8 @@ export default function TabLayout() {
         name="PlannerPage"
         options={{
           title: "Planner",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "code-slash" : "code-slash-outline"}
-              color={color}
-            />
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name={"clipboard-outline"} color={color} />
           ),
         }}
       />
@@ -42,11 +36,17 @@ export default function TabLayout() {
         name="RoutinesPage"
         options={{
           title: "Routines",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "code-slash" : "code-slash-outline"}
-              color={color}
-            />
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name={"brush-outline"} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="SettingsPage"
+        options={{
+          title: "Settings",
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name={"settings-outline"} color={color} />
           ),
         }}
       />

@@ -17,7 +17,7 @@ export const EffortOptionsInput = ({
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
-        gap: 10,
+        gap: 25,
       }}
     >
       <View
@@ -34,7 +34,7 @@ export const EffortOptionsInput = ({
         <ToggleButton value={value} onChange={onChange} optionValue={4} />
       </View>
       <TextInput
-        style={{ width: "25%" }}
+        style={{ flexGrow: 1, flexShrink: 1 }}
         label="Effort"
         keyboardType="numeric"
         onChangeText={(text) => {

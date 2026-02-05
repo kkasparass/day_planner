@@ -40,7 +40,7 @@ export const InputDialog: FC<InputDialogProps> = ({
         <Dialog.Content style={styles.dialogContainer}>
           <View style={styles.inputRow}>
             <TextInput
-              style={{ width: 230 }}
+              style={{ flexGrow: 1, flexShrink: 1 }}
               label={inputLabel ?? "Todo"}
               keyboardType={keyboardType}
               defaultValue={defaultValue ?? todaoText}
@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
   inputRow: {
     display: "flex",
     flexDirection: "row",
-    columnGap: 15,
+    columnGap: 25,
     alignItems: "center",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
   },
 });

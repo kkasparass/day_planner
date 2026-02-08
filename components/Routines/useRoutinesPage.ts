@@ -11,7 +11,7 @@ export const useRoutinesPage = () => {
   useEffect(() => {
     async function setup() {
       const result = await db.getAllAsync<Routine>(
-        "SELECT * FROM routines ORDER BY id DESC"
+        "SELECT * FROM routines ORDER BY id DESC",
       );
       setRoutines(result);
     }

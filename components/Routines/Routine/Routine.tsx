@@ -27,6 +27,7 @@ export const Routine = ({
     closeMergeDialog,
     createNewRoutine,
     onMergeIntoTimelineItem,
+    onRoutineSelect,
   } = useRoutine({
     routine,
     reloadRoutines,
@@ -78,6 +79,7 @@ export const Routine = ({
         onTextSubmit={createNewRoutine}
         energyCap={100}
         currentEffortTotal={totalRoutineEffort}
+        onRoutineSelect={onRoutineSelect}
       />
       <TimelineListDialog
         isVisible={timelineListdialogVisible}

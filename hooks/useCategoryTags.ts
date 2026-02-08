@@ -9,9 +9,9 @@ export const useCategoryTags = () => {
   useEffect(() => {
     async function setup() {
       const result = await db.getAllAsync<{ tag: string | null }>(
-        `SELECT tag FROM planning_categories GROUP BY tag;`
+        `SELECT tag FROM planning_categories GROUP BY tag;`,
       );
-      setTags(result.map(({ tag }) => tag));
+      setTags([...result.map(({ tag }) => tag), "Routines"]);
     }
     setup();
   }, []);

@@ -28,7 +28,7 @@ export const useRoutine = ({
       routineItems.reduce((sum, todo) => {
         return sum + todo.effort;
       }, 0),
-    [routineItems]
+    [routineItems],
   );
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export const useRoutine = ({
       const result = await db.getAllAsync<RoutineItem>(
         `SELECT * FROM routine_items WHERE routineId = ${routine.id}
          ORDER BY
-          id ASC;`
+          id ASC;`,
       );
       setRoutineItems(result);
     }
@@ -69,7 +69,7 @@ export const useRoutine = ({
       label,
       routine.id,
       cat ? cat.id : null,
-      cat?.effort || 0
+      cat?.effort || 0,
     );
     setReloadDB(true);
   };
@@ -82,7 +82,7 @@ export const useRoutine = ({
   const onMergeIntoTimelineItem = async (timelineId: number) => {
     const filteredRoutineItems = selectedRoutines
       ? routineItems.filter((routine) =>
-          selectedRoutines.some((id) => id === routine.id)
+          selectedRoutines.some((id) => id === routine.id),
         )
       : routineItems;
     filteredRoutineItems.forEach(async (routineItem) => {
@@ -91,12 +91,21 @@ export const useRoutine = ({
         routineItem.label,
         timelineId,
         routineItem.catId ? routineItem.catId : null,
-        routineItem.effort
+        routineItem.effort,
       );
     });
     setTimelineListDialogVisible(false);
     dispatch(reloadTodao(timelineId));
     setSelectedRoutines(undefined);
+  };
+  const onRoutineSelect = async (id: number) => {
+    await db.runAsync(
+      `
+        INSERT INTO routine_items (label, routineId, catId, effort)
+        SELECT label, ${routine.id}, catId, effort FROM routine_items WHERE routineId = ${id}
+      `,
+    );
+    setReloadDB(true);
   };
 
   return {
@@ -113,5 +122,6 @@ export const useRoutine = ({
     closeMergeDialog,
     createNewRoutine,
     onMergeIntoTimelineItem,
+    onRoutineSelect,
   };
 };

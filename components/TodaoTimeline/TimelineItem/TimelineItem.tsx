@@ -29,6 +29,7 @@ export const TimelineItem = ({
     onTextSubmit,
     onEnergyCapChange,
     handleReloadDB,
+    onRoutineSelect,
   } = useTimelineItem({ timelineItem });
 
   return (
@@ -107,10 +108,8 @@ export const TimelineItem = ({
         currentEffortTotal={totalTodosEffort}
         isVisible={todaoDialogVisible}
         onDismiss={closeTodaoDialog}
-        onTextSubmit={(label: string, cat?: PlanningCategory) => {
-          onTextSubmit(label, cat);
-          handleReloadDB();
-        }}
+        onTextSubmit={onTextSubmit}
+        onRoutineSelect={onRoutineSelect}
       />
     </View>
   );

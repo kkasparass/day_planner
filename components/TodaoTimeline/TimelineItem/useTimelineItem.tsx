@@ -23,11 +23,11 @@ export const useTimelineItem = ({
 
   const undoneTodos = useMemo(
     () => dayTodos.filter(({ completed }) => !completed),
-    [dayTodos]
+    [dayTodos],
   );
   const completedTodos = useMemo(
     () => dayTodos.filter(({ completed }) => completed),
-    [dayTodos]
+    [dayTodos],
   );
 
   const { totalTodosEffort, totalCompletedEffort } = useMemo(
@@ -40,9 +40,9 @@ export const useTimelineItem = ({
               sum.totalCompletedEffort + (todo.completed ? todo.effort : 0),
           };
         },
-        { totalTodosEffort: 0, totalCompletedEffort: 0 }
+        { totalTodosEffort: 0, totalCompletedEffort: 0 },
       ),
-    [dayTodos]
+    [dayTodos],
   );
 
   const dayProgressValue = useMemo(
@@ -50,7 +50,7 @@ export const useTimelineItem = ({
       totalCompletedEffort / energyCap < 1
         ? totalCompletedEffort / energyCap
         : 1,
-    [totalCompletedEffort, energyCap]
+    [totalCompletedEffort, energyCap],
   );
 
   const energyColor = useMemo(() => {
@@ -68,7 +68,7 @@ export const useTimelineItem = ({
       const result = await db.getAllAsync<DailyTodo>(
         `SELECT * FROM daily_todos WHERE timelineId = ${id}
          ORDER BY
-          id ASC;`
+          id ASC;`,
       );
       setDayTodods(result);
     }
@@ -87,16 +87,6 @@ export const useTimelineItem = ({
     reloadTimeline();
   };
 
-  const onTextSubmit = async (label: string, cat?: PlanningCategory) => {
-    await db.runAsync(
-      "INSERT INTO daily_todos (label, timelineId, catId, effort) VALUES (?, ?, ?, ?)",
-      label,
-      id,
-      cat?.id ? cat.id : null,
-      cat?.effort || 0
-    );
-  };
-
   const onEnergyCapChange = async (newValue: string) => {
     await db.runAsync("UPDATE todao_timeline SET energyCap = ? WHERE id = ?", [
       newValue,
@@ -104,7 +94,6 @@ export const useTimelineItem = ({
     ]);
     reloadTimeline();
   };
-
   const openEnergyDialog = () => setEnergyDialogVisible(true);
   const closeEnergyDialog = () => setEnergyDialogVisible(false);
 
@@ -112,6 +101,28 @@ export const useTimelineItem = ({
   const closeTodaoDialog = () => setTodaoDialogVisible(false);
 
   const handleReloadDB = () => dispatch(reloadTodao(id));
+
+  const onTextSubmit = async (label: string, cat?: PlanningCategory) => {
+    await db.runAsync(
+      "INSERT INTO daily_todos (label, timelineId, catId, effort) VALUES (?, ?, ?, ?)",
+      label,
+      id,
+      cat?.id ? cat.id : null,
+      cat?.effort || 0,
+    );
+    handleReloadDB();
+  };
+
+  const onRoutineSelect = async (routineId: number) => {
+    console.log("doing");
+    await db.runAsync(
+      `
+        INSERT INTO daily_todos (label, timelineId, catId, effort)
+        SELECT label, ${id}, catId, effort FROM routine_items WHERE routineId = ${routineId}
+      `,
+    );
+    handleReloadDB();
+  };
 
   return {
     undoneTodos,
@@ -129,5 +140,6 @@ export const useTimelineItem = ({
     onTextSubmit,
     onEnergyCapChange,
     handleReloadDB,
+    onRoutineSelect,
   };
 };

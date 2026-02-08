@@ -12,12 +12,14 @@ export const NewTodaoDialog = ({
   onTextSubmit,
   energyCap,
   currentEffortTotal,
+  onRoutineSelect,
 }: {
   isVisible: boolean;
   onDismiss: () => void;
   onTextSubmit: (label: string, cat?: PlanningCategory) => void;
   energyCap: number;
   currentEffortTotal: number;
+  onRoutineSelect: (id: number) => void;
 }) => {
   const [todaoText, setTodaoText] = useState("");
   const [todaoEffort, setTodaoEffort] = useState(0);
@@ -46,8 +48,8 @@ export const NewTodaoDialog = ({
               X
             </Button>
           </View>
-          <Text style={styles.efforTest}>
-            {currentEffortTotal}/{energyCap}
+          <Text style={styles.effortText}>
+            {currentEffortTotal}|{energyCap}
           </Text>
           <View style={styles.labelInputContainer}>
             <TextInput
@@ -72,6 +74,7 @@ export const NewTodaoDialog = ({
             onTextSubmit={onTextSubmit}
             energyCap={energyCap}
             currentEffortTotal={currentEffortTotal}
+            onRoutineSelect={onRoutineSelect}
           />
         </KeyboardAvoidingView>
       </Modal>
@@ -92,7 +95,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 15,
   },
-  efforTest: { paddingHorizontal: 15, fontSize: 16, marginBottom: 30 },
+  effortText: { paddingHorizontal: 15, fontSize: 16, marginBottom: 30 },
   labelInputContainer: {
     display: "flex",
     flexDirection: "row",

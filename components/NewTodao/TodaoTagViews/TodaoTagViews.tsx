@@ -3,17 +3,21 @@ import { PlanningCategory } from "@/types/types";
 import SwipeableTabs from "../../SwipeTabs/SwipeableTabs";
 import { TodaoPlanList } from "../TodaoPlanList";
 import { useCategoryTags } from "@/hooks/useCategoryTags";
+import { Text } from "react-native-paper";
+import { RoutinesList } from "../RoutinesList/RoutinesList";
 
 export const TodaoTagViews = ({
   onTextSubmit,
   energyCap,
   currentEffortTotal,
+  onRoutineSelect,
 }: {
   onTextSubmit: (label: string, cat?: PlanningCategory) => void;
+  onRoutineSelect: (id: number) => void;
   energyCap: number;
   currentEffortTotal: number;
 }) => {
-  const { tags, selectedIndex, setSelectedIndex } = useCategoryTags();
+  const { tags, selectedIndex } = useCategoryTags();
 
   return (
     <View style={{ height: 550 }}>
@@ -21,15 +25,22 @@ export const TodaoTagViews = ({
         selectedIndex={selectedIndex}
         labels={tags.map((tag) => (tag === null ? "all" : tag))}
       >
-        {tags.map((tag) => (
-          <TodaoPlanList
-            onTextSubmit={onTextSubmit}
-            tag={tag}
-            key={tag}
-            energyCap={energyCap}
-            currentEffortTotal={currentEffortTotal}
-          />
-        ))}
+        {tags.map((tag) =>
+          tag === "Routines" ? (
+            <RoutinesList
+              key="unique_routines-section"
+              onRoutineSelect={onRoutineSelect}
+            />
+          ) : (
+            <TodaoPlanList
+              onTextSubmit={onTextSubmit}
+              tag={tag}
+              key={tag}
+              energyCap={energyCap}
+              currentEffortTotal={currentEffortTotal}
+            />
+          ),
+        )}
       </SwipeableTabs>
     </View>
   );

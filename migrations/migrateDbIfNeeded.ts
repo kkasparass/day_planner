@@ -9,14 +9,16 @@ import { reapeatFreqSetValueMigration } from "./7_reapeat_freq_set_value";
 import { createRoutinesTableMigration } from "./8_routines_table";
 import { createRoutineItemsTableMigration } from "./9_add_routine_items_table";
 import { addEffortValuesMigration } from "./10_add_effort_values";
+import { addUserSettingsMigration } from "./11_add_user_settings_table";
 
 export const migrateDbIfNeeded = async (db: SQLiteDatabase) => {
-  const DATABASE_VERSION = 11;
+  const DATABASE_VERSION = 12;
   let { user_version: currentDbVersion } = (await db.getFirstAsync<{
     user_version: number;
   }>("PRAGMA user_version")) as {
     user_version: number;
   };
+
   if (currentDbVersion >= DATABASE_VERSION) {
     return;
   }
@@ -63,6 +65,10 @@ export const migrateDbIfNeeded = async (db: SQLiteDatabase) => {
   if (currentDbVersion === 10) {
     await addEffortValuesMigration(db);
     currentDbVersion = 11;
+  }
+  if (currentDbVersion === 11) {
+    await addUserSettingsMigration(db);
+    currentDbVersion = 12;
   }
 
   await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);

@@ -114,7 +114,6 @@ export const useTimelineItem = ({
   };
 
   const onRoutineSelect = async (routineId: number) => {
-    console.log("doing");
     await db.runAsync(
       `
         INSERT INTO daily_todos (label, timelineId, catId, effort)

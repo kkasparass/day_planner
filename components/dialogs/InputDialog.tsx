@@ -25,11 +25,11 @@ export const InputDialog: FC<InputDialogProps> = ({
   children,
   keyboardType,
 }) => {
-  const [todaoText, setTodaoText] = useState(defaultValue ?? "");
+  const [text, setText] = useState(defaultValue ?? "");
 
   const handleTextSubmit = async () => {
-    await onTextSubmit(todaoText);
-    setTodaoText("");
+    await onTextSubmit(text);
+    setText("");
     onDismiss();
   };
 
@@ -43,8 +43,8 @@ export const InputDialog: FC<InputDialogProps> = ({
               style={{ flexGrow: 1, flexShrink: 1 }}
               label={inputLabel ?? "Todo"}
               keyboardType={keyboardType}
-              defaultValue={defaultValue ?? todaoText}
-              onChangeText={(text) => setTodaoText(text)}
+              defaultValue={defaultValue ?? text}
+              onChangeText={(text) => setText(text)}
             />
             <Button mode="contained" onPress={handleTextSubmit}>
               {triggerLabel ?? "+"}
@@ -68,6 +68,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     columnGap: 25,
     alignItems: "center",
-    // justifyContent: "space-between",
   },
 });

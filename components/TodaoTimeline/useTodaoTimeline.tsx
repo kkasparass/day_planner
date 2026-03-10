@@ -28,9 +28,11 @@ export const useTodaoTimeline = () => {
 
   const handleNewDay = async () => {
     await db.runAsync(
-      "INSERT INTO todao_timeline (date, energyCap) VALUES (?, ?)",
-      `${new Date()}`,
-      24,
+      `INSERT INTO todao_timeline (date, energyCap)
+        SELECT '${new Date().toISOString().split("T")[0]}', initialEffort
+        FROM user_settings
+        LIMIT 1;
+      `,
     );
     dispatch(reloadTimeline());
   };

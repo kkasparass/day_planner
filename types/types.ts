@@ -43,3 +43,8 @@ export type RoutineItem = {
   catId?: number;
   effort: number;
 };
+
+export type UserSettings = {
+  id: number;
+  initialEffort: number;
+};

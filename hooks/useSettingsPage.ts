@@ -2,9 +2,34 @@ import { useSQLiteContext } from "expo-sqlite";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
 import * as DocumentPicker from "expo-document-picker";
+import { useEffect, useState } from "react";
+import { UserSettings } from "@/types/types";
 
 export const useSettingsPage = () => {
   const db = useSQLiteContext();
+  const [userSettings, setUserSettings] = useState<UserSettings>();
+  const [reloadUserSettings, setReloadReloadUserSettings] = useState(true);
+
+  useEffect(() => {
+    async function setup() {
+      const result = await db.getAllAsync<UserSettings>(
+        `SELECT * FROM user_settings`,
+      );
+      setUserSettings(result[0]);
+    }
+    if (reloadUserSettings) {
+      setup();
+      setReloadReloadUserSettings(false);
+    }
+  }, [reloadUserSettings]);
+
+  const updateInitialEffort = async (newEffort: string) => {
+    await db.execAsync(`
+      UPDATE user_settings
+      SET initialEffort = ${newEffort}
+    `);
+    setReloadReloadUserSettings(true);
+  };
 
   const backupDatabase = async (backupName: string) => {
     try {
@@ -77,7 +102,15 @@ export const useSettingsPage = () => {
     `);
   };
 
+  const runCustomDBCommand = async () => {
+    // await db.execAsync(`DROP TABLE user_settings`);
+    // await db.execAsync(`PRAGMA user_version = 11`);
+  };
+
   return {
+    userSettings,
+    runCustomDBCommand,
+    updateInitialEffort,
     backupDatabase,
     restoreDatabase,
     deleteAllData,

@@ -10,9 +10,10 @@ import { createRoutinesTableMigration } from "./8_routines_table";
 import { createRoutineItemsTableMigration } from "./9_add_routine_items_table";
 import { addEffortValuesMigration } from "./10_add_effort_values";
 import { addUserSettingsMigration } from "./11_add_user_settings_table";
+import { addOrderToDayTodos } from "./12_add_order_to_day_todos";
 
 export const migrateDbIfNeeded = async (db: SQLiteDatabase) => {
-  const DATABASE_VERSION = 12;
+  const DATABASE_VERSION = 13;
   let { user_version: currentDbVersion } = (await db.getFirstAsync<{
     user_version: number;
   }>("PRAGMA user_version")) as {
@@ -69,6 +70,10 @@ export const migrateDbIfNeeded = async (db: SQLiteDatabase) => {
   if (currentDbVersion === 11) {
     await addUserSettingsMigration(db);
     currentDbVersion = 12;
+  }
+  if (currentDbVersion === 12) {
+    await addOrderToDayTodos(db);
+    currentDbVersion = 13;
   }
 
   await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);

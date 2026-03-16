@@ -1,3 +1,4 @@
+import "react-native-gesture-handler";
 import { useEffect } from "react";
 import {
   DarkTheme,
@@ -8,6 +9,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import "react-native-reanimated";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider } from "react-redux";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
@@ -36,19 +38,21 @@ export default function RootLayout() {
   }
 
   return (
-    <Provider store={store}>
-      <SQLiteProvider databaseName="test.db" onInit={migrateDbIfNeeded}>
-        <PaperProvider>
-          <ThemeProvider
-            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-          >
-            <Stack>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen name="+not-found" />
-            </Stack>
-          </ThemeProvider>
-        </PaperProvider>
-      </SQLiteProvider>
-    </Provider>
+    <GestureHandlerRootView>
+      <Provider store={store}>
+        <SQLiteProvider databaseName="test.db" onInit={migrateDbIfNeeded}>
+          <PaperProvider>
+            <ThemeProvider
+              value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+            >
+              <Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name="+not-found" />
+              </Stack>
+            </ThemeProvider>
+          </PaperProvider>
+        </SQLiteProvider>
+      </Provider>
+    </GestureHandlerRootView>
   );
 }

@@ -19,6 +19,7 @@ export type DailyTodo = {
   timelineId: number;
   catId: number;
   effort: number;
+  itemOrder: number;
 };
 
 export type TodoTimelineItem = {

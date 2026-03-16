@@ -1,8 +1,9 @@
-import { FlatList, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { Button, Divider } from "react-native-paper";
 import { TimelineItem } from "@/components/TodaoTimeline/TimelineItem/TimelineItem";
 import { useTodaoTimeline } from "@/components/TodaoTimeline/useTodaoTimeline";
+import { NestableScrollContainer } from "react-native-draggable-flatlist";
 
 export default function TodaoPage() {
   const { todaoTimeline, handleNewDay } = useTodaoTimeline();
@@ -22,14 +23,11 @@ export default function TodaoPage() {
       </Button>
 
       <Divider />
-
-      <FlatList
-        data={todaoTimeline}
-        renderItem={({ item: todoDay }) => (
+      <NestableScrollContainer>
+        {todaoTimeline.map((todoDay) => (
           <TimelineItem timelineItem={todoDay} key={todoDay.id} />
-        )}
-        keyExtractor={(item) => `${item.id}`}
-      />
+        ))}
+      </NestableScrollContainer>
     </ParallaxScrollView>
   );
 }

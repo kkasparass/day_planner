@@ -30,6 +30,42 @@ export const useTimelineItem = ({
     [dayTodos],
   );
 
+  const updateUndoneTodoOrder = useCallback(
+    (from: number, to: number) => {
+      const initialTodo = undoneTodos[from];
+      const initialTodoOrder = undoneTodos[from].itemOrder;
+      const targetTodoOrder = undoneTodos[to].itemOrder;
+
+      if (initialTodoOrder === targetTodoOrder) return;
+      if (initialTodoOrder < targetTodoOrder) {
+        db.execAsync(
+          `
+        UPDATE daily_todos
+        SET itemOrder = itemOrder - 1
+        WHERE timelineId = ${initialTodo.timelineId} AND itemOrder BETWEEN ${initialTodoOrder} AND ${targetTodoOrder};
+
+        UPDATE daily_todos
+        SET itemOrder = ${targetTodoOrder}
+        WHERE id = ${initialTodo.id};`,
+        );
+      }
+      if (initialTodoOrder > targetTodoOrder) {
+        db.execAsync(
+          `
+        UPDATE daily_todos
+        SET itemOrder = itemOrder + 1
+        WHERE timelineId = ${initialTodo.timelineId} AND itemOrder BETWEEN ${targetTodoOrder} AND ${initialTodoOrder};
+
+        UPDATE daily_todos
+        SET itemOrder = ${targetTodoOrder}
+        WHERE id = ${initialTodo.id};`,
+        );
+      }
+      handleReloadDB();
+    },
+    [undoneTodos],
+  );
+
   const { totalTodosEffort, totalCompletedEffort } = useMemo(
     () =>
       dayTodos.reduce(
@@ -68,7 +104,7 @@ export const useTimelineItem = ({
       const result = await db.getAllAsync<DailyTodo>(
         `SELECT * FROM daily_todos WHERE timelineId = ${id}
          ORDER BY
-          id ASC;`,
+          itemOrder ASC;`,
       );
       setDayTodods(result);
     }
@@ -140,5 +176,6 @@ export const useTimelineItem = ({
     onEnergyCapChange,
     handleReloadDB,
     onRoutineSelect,
+    updateUndoneTodoOrder,
   };
 };

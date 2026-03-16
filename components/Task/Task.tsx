@@ -1,17 +1,28 @@
 import { Pressable, StyleSheet, View } from "react-native";
-import { Badge, Checkbox, IconButton, Text } from "react-native-paper";
+import {
+  Badge,
+  Checkbox,
+  IconButton,
+  Text,
+  TouchableRipple,
+} from "react-native-paper";
 import { DailyTodo } from "@/types/types";
 import { LabelEffortDialog } from "../dialogs/LabelEffortDialog";
 import { useTask } from "./useTask";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const Task = ({
   todo,
+  isActive,
   dayDate,
   reloadTodos,
+  drag,
 }: {
   todo: DailyTodo;
-  reloadTodos: () => void;
+  isActive: boolean;
   dayDate: string;
+  reloadTodos: () => void;
+  drag: () => void;
 }) => {
   const { completed, catId, effort } = todo;
   const {
@@ -35,6 +46,11 @@ export const Task = ({
           <Badge style={styles.badge} size={17}>
             {effort}
           </Badge>
+        )}
+        {!completed && (
+          <TouchableRipple onLongPress={drag} disabled={isActive}>
+            <Ionicons name="reorder-four-outline" color="white" size={24} />
+          </TouchableRipple>
         )}
         <Checkbox
           status={completed ? "checked" : "unchecked"}

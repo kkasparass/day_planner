@@ -1,7 +1,11 @@
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 
-export const useCategoryTags = () => {
+export const useCategoryTags = ({
+  hasRoutines = false,
+}: {
+  hasRoutines?: boolean;
+}) => {
   const db = useSQLiteContext();
   const [tags, setTags] = useState<(string | null)[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -11,7 +15,10 @@ export const useCategoryTags = () => {
       const result = await db.getAllAsync<{ tag: string | null }>(
         `SELECT tag FROM planning_categories GROUP BY tag;`,
       );
-      setTags([...result.map(({ tag }) => tag), "Routines"]);
+      setTags([
+        ...(result.length > 0 ? result.map(({ tag }) => tag) : [null]),
+        ...(hasRoutines ? ["Routines"] : []),
+      ]);
     }
     setup();
   }, []);

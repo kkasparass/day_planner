@@ -43,7 +43,7 @@ export const NewTodaoDialog = ({
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
           <View style={styles.titleHeaderContainer}>
-            <Text variant="displayMedium">New Todao</Text>
+            <Text variant="displayMedium">New Todos</Text>
             <Button mode="contained" onPress={onDismiss}>
               X
             </Button>

@@ -17,7 +17,7 @@ export const TodaoTagViews = ({
   energyCap: number;
   currentEffortTotal: number;
 }) => {
-  const { tags, selectedIndex } = useCategoryTags();
+  const { tags, selectedIndex } = useCategoryTags({ hasRoutines: true });
 
   return (
     <View style={{ height: 550 }}>

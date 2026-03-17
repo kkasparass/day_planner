@@ -17,7 +17,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Todao",
+          title: "Todos",
           tabBarIcon: ({ color }) => (
             <TabBarIcon name={"checkbox-outline"} color={color} />
           ),

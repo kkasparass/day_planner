@@ -13,7 +13,7 @@ export default function TodaoPage() {
   }
 
   return (
-    <ParallaxScrollView title="Todao">
+    <ParallaxScrollView title="Todos">
       <Button
         mode="contained"
         style={styles.newDayButton}

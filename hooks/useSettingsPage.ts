@@ -84,6 +84,9 @@ export const useSettingsPage = () => {
       DELETE FROM todao_timeline;
       Delete FROM daily_todos;
       Delete FROM planning_categories;
+      Delete FROM routines;
+      Delete FROM routine_items;
+      
     `);
   };
   const deleteTimeline = async () => {

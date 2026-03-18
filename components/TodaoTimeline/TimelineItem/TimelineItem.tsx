@@ -69,8 +69,8 @@ export const TimelineItem = ({
         <Card.Content style={styles.todaoCardContainer}>
           <NestableDraggableFlatList
             data={undoneTodos}
-            onDragEnd={({ from, to }) => {
-              updateUndoneTodoOrder(from, to);
+            onDragEnd={({ data, from, to }) => {
+              updateUndoneTodoOrder(data, from, to);
             }}
             keyExtractor={(item) => `${item.id}`}
             renderItem={({ item: todo, drag, isActive }) => (

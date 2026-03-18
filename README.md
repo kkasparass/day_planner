@@ -57,7 +57,7 @@ You can add the base categories straight into your daily todos list.
 TODOs added from plan items will also have a check button to complete the plan item if the task is completely done!
 ![alt text](assets/documentation/image.png)
 
-_Repeat frequency_: For repeating tasks that you want to do at regular intervals, for example change bedsheets once a week, you can set a repeating frequency for a planned item in the plan edit screen. It accepts a number that represents how many days we want to pass before repeat the task. When selecting the task from the create task screen. It will have a different border depending on how many days it's been since last completion.
+**Repeat frequency**: For repeating tasks that you want to do at regular intervals, for example change bedsheets once a week, you can set a repeating frequency for a planned item in the plan edit screen. It accepts a number that represents how many days we want to pass before repeat the task. When selecting the task from the create task screen. It will have a different border depending on how many days it's been since last completion.
 Green - done recently, orange - will have to do soon, red - the date has passed, you might want to do it.
 ![alt text](assets/documentation/image-2.png)![alt text](assets/documentation/image-3.png)
 

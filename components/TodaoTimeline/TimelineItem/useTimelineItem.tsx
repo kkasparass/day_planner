@@ -31,7 +31,7 @@ export const useTimelineItem = ({
   );
 
   const updateUndoneTodoOrder = useCallback(
-    (from: number, to: number) => {
+    (data: DailyTodo[], from: number, to: number) => {
       const initialTodo = undoneTodos[from];
       const initialTodoOrder = undoneTodos[from].itemOrder;
       const targetTodoOrder = undoneTodos[to].itemOrder;
@@ -48,6 +48,21 @@ export const useTimelineItem = ({
         SET itemOrder = ${targetTodoOrder}
         WHERE id = ${initialTodo.id};`,
         );
+
+        setDayTodods(
+          [...data, ...completedTodos].map((todo) => {
+            if (todo.id === initialTodo.id) {
+              return { ...todo, itemOrder: targetTodoOrder };
+            }
+            if (
+              todo.itemOrder >= initialTodoOrder &&
+              todo.itemOrder <= targetTodoOrder
+            ) {
+              return { ...todo, itemOrder: todo.itemOrder - 1 };
+            }
+            return todo;
+          }),
+        );
       }
       if (initialTodoOrder > targetTodoOrder) {
         db.execAsync(
@@ -60,10 +75,23 @@ export const useTimelineItem = ({
         SET itemOrder = ${targetTodoOrder}
         WHERE id = ${initialTodo.id};`,
         );
+        setDayTodods(
+          [...data, ...completedTodos].map((todo) => {
+            if (todo.id === initialTodo.id) {
+              return { ...todo, itemOrder: targetTodoOrder };
+            }
+            if (
+              todo.itemOrder >= targetTodoOrder &&
+              todo.itemOrder <= initialTodoOrder
+            ) {
+              return { ...todo, itemOrder: todo.itemOrder + 1 };
+            }
+            return todo;
+          }),
+        );
       }
-      handleReloadDB();
     },
-    [undoneTodos],
+    [undoneTodos, setDayTodods, completedTodos, db],
   );
 
   const { totalTodosEffort, totalCompletedEffort } = useMemo(

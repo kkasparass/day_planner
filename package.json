@@ -14,7 +14,11 @@
     "build:preview": "eas build -p android --profile preview"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "setupFilesAfterEnv": ["./jest.setup.ts"],
+    "transformIgnorePatterns": [
+      "/node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|react-native-draggable-flatlist|react-native-gesture-handler|@reduxjs/toolkit|immer|react-redux)"
+    ]
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
@@ -53,6 +57,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@testing-library/react-native": "^12.9.0",
     "@types/jest": "^29.5.12",
     "@types/react": "~18.2.45",
     "@types/react-test-renderer": "^18.0.7",

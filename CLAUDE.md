@@ -28,6 +28,63 @@ npm run build:dev      # development build
 npm run build:preview  # preview build
 ```
 
+## Testing
+
+### Stack
+- **Jest** + **jest-expo** preset (handles Babel transforms and `@/*` path alias resolution from `tsconfig.json`)
+- **@testing-library/react-native** v12 — `renderHook`, `waitFor`, `act` for hook and component tests; includes jest-native matchers via `@testing-library/react-native/extend-expect`
+
+### Key files
+- `jest.setup.ts` — global mocks (Reanimated, gesture handler, `expo-sqlite`, `expo-document-picker`, `expo-sharing`)
+- `__mocks__/createMockDb.ts` — factory for a mock SQLite DB object; import in test files that use `useSQLiteContext`
+
+### Mocking `useSQLiteContext`
+`expo-sqlite` is mocked globally in `jest.setup.ts`. In each test file, inject mock behavior with:
+```typescript
+import { useSQLiteContext } from "expo-sqlite";
+import { createMockDb } from "@/__mocks__/createMockDb";
+
+const mockDb = createMockDb();
+beforeEach(() => {
+  jest.clearAllMocks();
+  (useSQLiteContext as jest.Mock).mockReturnValue(mockDb);
+});
+```
+
+### Hooks that use Redux + SQLite
+Wrap `renderHook` in a real Redux store using `Provider`:
+```typescript
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+import counterReducer from "@/store/slices/todaoTimelineListSlice";
+import todaosReducer from "@/store/slices/todaosSlice";
+
+const store = configureStore({
+  reducer: { counter: counterReducer, todaos: todaosReducer },
+  preloadedState: { counter: { reloadDB: true }, todaos: { queries: {} } },
+});
+const wrapper = ({ children }) => React.createElement(Provider, { store }, children);
+const { result } = renderHook(() => useMyHook(), { wrapper });
+```
+
+### Test file locations
+Co-located with source in `__tests__/` subdirectories. Current coverage:
+- `components/NewTodao/AddFromPlanButton/__tests__/utils.test.ts`
+- `components/NewTodao/NestedPlanAccordionCTA/__tests__/utils.test.ts`
+- `store/slices/__tests__/todaoTimelineListSlice.test.ts`
+- `store/slices/__tests__/todaosSlice.test.ts`
+- `hooks/__tests__/useCategoryTags.test.ts`
+- `hooks/__tests__/useParentCategories.test.ts`
+- `hooks/__tests__/useChildCategories.test.ts`
+- `hooks/__tests__/useSingleCategory.test.ts`
+- `components/Task/__tests__/useTask.test.ts`
+- `components/TodaoTimeline/__tests__/useTodaoTimeline.test.ts`
+- `components/TodaoTimeline/TimelineItem/__tests__/useTimelineItem.test.ts`
+
+### Notes
+- Redux dispatch timing: after a dispatch triggers a reload, the reload completes synchronously in tests (mocks resolve immediately), so asserting intermediate Redux state mid-cycle is unreliable. Assert DB calls instead.
+- `act()` warnings on async state updates are cosmetic — tests still pass. They come from state updates inside `useEffect` async functions.
+
 ## Architecture
 
 React Native (Expo) mobile app — fully offline, no backend. All data is stored in a local SQLite database (`test.db`).

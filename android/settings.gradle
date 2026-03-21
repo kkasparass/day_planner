@@ -44,7 +44,7 @@ if (getRNMinorVersion() >= 75) {
   }
 }
 
-rootProject.name = 'day_planner'
+rootProject.name = 'Day Planner'
 
 dependencyResolutionManagement {
   versionCatalogs {

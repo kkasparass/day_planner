@@ -80,20 +80,15 @@ export const useRoutine = ({
   };
 
   const onMergeIntoTimelineItem = async (timelineId: number) => {
-    const filteredRoutineItems = selectedRoutines
-      ? routineItems.filter((routine) =>
-          selectedRoutines.some((id) => id === routine.id),
-        )
-      : routineItems;
-    for (const routineItem of filteredRoutineItems) {
-      await db.runAsync(
-        "INSERT INTO daily_todos (label, timelineId, catId, effort) VALUES (?, ?, ?, ?)",
-        routineItem.label,
-        timelineId,
-        routineItem.catId ? routineItem.catId : null,
-        routineItem.effort,
-      );
-    }
+    const itemFilter = selectedRoutines
+      ? `AND id IN (${selectedRoutines.join(",")})`
+      : "";
+    await db.runAsync(
+      `INSERT INTO daily_todos (label, timelineId, catId, effort)
+       SELECT label, ${timelineId}, catId, effort FROM routine_items
+       WHERE routineId = ${routine.id} ${itemFilter}
+       ORDER BY itemOrder ASC`,
+    );
     setTimelineListDialogVisible(false);
     dispatch(reloadTodao(timelineId));
     setSelectedRoutines(undefined);

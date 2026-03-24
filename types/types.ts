@@ -43,6 +43,7 @@ export type RoutineItem = {
   routineId: number;
   catId?: number;
   effort: number;
+  itemOrder: number;
 };
 
 export type UserSettings = {

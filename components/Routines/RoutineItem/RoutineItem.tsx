@@ -3,15 +3,20 @@ import { Badge, IconButton, Text, TouchableRipple } from "react-native-paper";
 import { RoutineItem as RoutineItemT } from "@/types/types";
 import { LabelEffortDialog } from "../../dialogs/LabelEffortDialog";
 import { useRoutineItem } from "./useRoutineItem";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const RoutineItem = ({
   routineItem,
   reloadRoutine,
   onSelectRoutine,
+  drag,
+  isActive,
 }: {
   routineItem: RoutineItemT;
   reloadRoutine: () => void;
   onSelectRoutine: (specificRoutine: number) => void;
+  drag: () => void;
+  isActive: boolean;
 }) => {
   const { id, effort } = routineItem;
   const {
@@ -25,6 +30,9 @@ export const RoutineItem = ({
 
   return (
     <View style={styles.routineItemRow}>
+      <TouchableRipple onLongPress={drag} disabled={isActive}>
+        <Ionicons name="reorder-four-outline" color="white" size={24} />
+      </TouchableRipple>
       <TouchableRipple
         rippleColor="rgba(255, 255, 255, 0.32)"
         onPress={openEditDialog}

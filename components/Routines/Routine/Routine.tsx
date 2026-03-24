@@ -5,6 +5,10 @@ import { RoutineItem } from "../RoutineItem/RoutineItem";
 import { TimelineListDialog } from "../TimelineListDialog/TimelineListDialog";
 import { useRoutine } from "./useRoutine";
 import { Routine as RoutineT } from "@/types/types";
+import {
+  NestableDraggableFlatList,
+  ScaleDecorator,
+} from "react-native-draggable-flatlist";
 
 export const Routine = ({
   routine,
@@ -28,6 +32,7 @@ export const Routine = ({
     createNewRoutine,
     onMergeIntoTimelineItem,
     onRoutineSelect,
+    updateRoutineItemOrder,
   } = useRoutine({
     routine,
     reloadRoutines,
@@ -49,14 +54,24 @@ export const Routine = ({
       </View>
       <Card>
         <Card.Content style={styles.cardContent}>
-          {routineItems.map((routineItem) => (
-            <RoutineItem
-              routineItem={routineItem}
-              key={routineItem.id}
-              reloadRoutine={reloadRoutine}
-              onSelectRoutine={onSelectSpecificRoutine}
-            />
-          ))}
+          <NestableDraggableFlatList
+            data={routineItems}
+            onDragEnd={({ data, from, to }) => {
+              updateRoutineItemOrder(data, from, to);
+            }}
+            keyExtractor={(item) => `${item.id}`}
+            renderItem={({ item: routineItem, drag, isActive }) => (
+              <ScaleDecorator>
+                <RoutineItem
+                  routineItem={routineItem}
+                  reloadRoutine={reloadRoutine}
+                  onSelectRoutine={onSelectSpecificRoutine}
+                  drag={drag}
+                  isActive={isActive}
+                />
+              </ScaleDecorator>
+            )}
+          />
           <Button
             mode="contained"
             style={{ marginTop: 20 }}

@@ -1,6 +1,6 @@
 # Database Schema
 
-Local SQLite database (`test.db`). Schema version: 13.
+Local SQLite database (`test.db`). Schema version: 14.
 
 WAL journal mode and foreign keys are enabled.
 
@@ -78,6 +78,9 @@ Individual tasks within a routine template.
 | `routineId` | INTEGER FK | — | → `routines.id` |
 | `catId` | INTEGER | NULL | Optional link → `planning_categories.id` |
 | `effort` | INTEGER | 0 | Effort points for this task |
+| `itemOrder` | INTEGER | 0 | Display order within the routine |
+
+**Trigger — `set_routine_item_order_value`:** Fires `AFTER INSERT`. When a new item is inserted with `itemOrder = 0`, automatically sets its `itemOrder` to `MAX(itemOrder) + 1` within the same `routineId`. New items always go to the bottom of the list.
 
 ---
 

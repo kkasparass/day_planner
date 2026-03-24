@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Planning
+
+When a plan is approved, save a copy of the plan to `.claude/feature-plans/<feature-name>.md` in this repo **before** starting implementation.
+
 ## Commands
 
 ```bash

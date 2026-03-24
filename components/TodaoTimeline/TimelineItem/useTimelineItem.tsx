@@ -182,6 +182,7 @@ export const useTimelineItem = ({
       `
         INSERT INTO daily_todos (label, timelineId, catId, effort)
         SELECT label, ${id}, catId, effort FROM routine_items WHERE routineId = ${routineId}
+        ORDER BY itemOrder ASC
       `,
     );
     handleReloadDB();

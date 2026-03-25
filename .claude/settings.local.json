@@ -3,7 +3,8 @@
     "allow": [
       "Bash(npx jest:*)",
       "Bash(mkdir -p /Users/henc.machine/.claude/feature-plans)",
-      "Bash(cp /Users/henc.machine/.claude/plans/abundant-doodling-creek.md /Users/henc.machine/.claude/feature-plans/reorderable-routine-items.md)"
+      "Bash(cp /Users/henc.machine/.claude/plans/abundant-doodling-creek.md /Users/henc.machine/.claude/feature-plans/reorderable-routine-items.md)",
+      "Bash(npm run:*)"
     ]
   }
 }

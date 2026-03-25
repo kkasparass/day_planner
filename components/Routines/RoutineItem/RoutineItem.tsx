@@ -34,6 +34,7 @@ export const RoutineItem = ({
         <Ionicons name="reorder-four-outline" color="white" size={24} />
       </TouchableRipple>
       <TouchableRipple
+        style={styles.routineTextRipple}
         rippleColor="rgba(255, 255, 255, 0.32)"
         onPress={openEditDialog}
         onLongPress={handleRoutineLongPress}
@@ -45,7 +46,7 @@ export const RoutineItem = ({
             </Badge>
           )}
 
-          <Text style={{ width: 250 }}>{routineItem.label}</Text>
+          <Text>{routineItem.label}</Text>
         </View>
       </TouchableRipple>
 
@@ -71,13 +72,17 @@ const styles = StyleSheet.create({
     gap: 10,
     justifyContent: "space-between",
     alignItems: "center",
+    flexShrink: 1,
+  },
+  routineTextRipple: {
+    flex: 1,
+    minWidth: 0,
   },
   routineText: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     position: "relative",
-    flex: 1,
   },
   badge: { position: "absolute", top: 0, right: -15 },
 });

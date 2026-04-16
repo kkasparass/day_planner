@@ -32,7 +32,7 @@ const makeStore = (reloadForId: number | null = null) =>
 const makeWrapper =
   (store: ReturnType<typeof makeStore>) =>
   ({ children }: { children: React.ReactNode }) =>
-    React.createElement(Provider, { store }, children);
+    React.createElement(Provider, { store, children });
 
 const makeTodo = (overrides: Partial<DailyTodo> = {}): DailyTodo => ({
   id: 1,

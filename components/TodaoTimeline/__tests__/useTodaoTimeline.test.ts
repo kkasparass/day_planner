@@ -22,7 +22,7 @@ const makeStore = (reloadDB = true) =>
 const makeWrapper =
   (store: ReturnType<typeof makeStore>) =>
   ({ children }: { children: React.ReactNode }) =>
-    React.createElement(Provider, { store }, children);
+    React.createElement(Provider, { store, children });
 
 beforeEach(() => {
   jest.clearAllMocks();

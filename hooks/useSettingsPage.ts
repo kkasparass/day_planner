@@ -35,8 +35,9 @@ export const useSettingsPage = () => {
     try {
       await db.execAsync("PRAGMA wal_checkpoint(FULL)");
       const appPath = FileSystem.documentDirectory;
-      const dbPath = `${appPath}/SQLite/${db.databaseName}`;
-      const backupPath = `${appPath}/SQLite/${backupName}`;
+      const dbFileName = db.databasePath.split("/").pop();
+      const dbPath = `${appPath}SQLite/${dbFileName}`;
+      const backupPath = `${appPath}SQLite/${backupName}`;
       await FileSystem.copyAsync({
         from: dbPath,
         to: backupPath,
@@ -51,7 +52,6 @@ export const useSettingsPage = () => {
 
   const restoreDatabase = async () => {
     try {
-      const appPath = FileSystem.documentDirectory;
       const result = await DocumentPicker.getDocumentAsync({
         type: "*/*",
         copyToCacheDirectory: true,
@@ -66,7 +66,9 @@ export const useSettingsPage = () => {
       }
       await db.execAsync("PRAGMA wal_checkpoint(FULL)");
       await db.closeAsync();
-      const dbPath = `${appPath}/SQLite/${db.databaseName}`;
+      const appPath = FileSystem.documentDirectory;
+      const dbFileName = db.databasePath.split("/").pop();
+      const dbPath = `${appPath}SQLite/${dbFileName}`;
       await FileSystem.deleteAsync(`${dbPath}-wal`, { idempotent: true });
       await FileSystem.deleteAsync(`${dbPath}-shm`, { idempotent: true });
 

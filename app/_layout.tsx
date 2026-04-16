@@ -17,6 +17,7 @@ import { SQLiteProvider } from "expo-sqlite";
 import { PaperProvider } from "react-native-paper";
 import { migrateDbIfNeeded } from "@/migrations/migrateDbIfNeeded";
 import { store } from "@/store/store";
+import { Colors } from "@/constants/Colors";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -45,8 +46,16 @@ export default function RootLayout() {
             <ThemeProvider
               value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
             >
-              <Stack>
+              <Stack
+                screenOptions={{
+                  headerStyle: {
+                    backgroundColor: Colors[colorScheme ?? "light"].background,
+                  },
+                  headerTintColor: Colors[colorScheme ?? "light"].text,
+                }}
+              >
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name="planner/edit/[id]" options={{ title: "Edit Plan" }} />
                 <Stack.Screen name="+not-found" />
               </Stack>
             </ThemeProvider>

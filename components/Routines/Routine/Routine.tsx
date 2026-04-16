@@ -1,3 +1,4 @@
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Card, Divider, Text } from "react-native-paper";
 import { NewTodaoDialog } from "../../NewTodao/NewTodaoDialog";
@@ -5,10 +6,7 @@ import { RoutineItem } from "../RoutineItem/RoutineItem";
 import { TimelineListDialog } from "../TimelineListDialog/TimelineListDialog";
 import { useRoutine } from "./useRoutine";
 import { Routine as RoutineT } from "@/types/types";
-import {
-  NestableDraggableFlatList,
-  ScaleDecorator,
-} from "react-native-draggable-flatlist";
+import { DraggableList } from "@/components/DraggableList/DraggableList";
 
 export const Routine = ({
   routine,
@@ -54,22 +52,20 @@ export const Routine = ({
       </View>
       <Card>
         <Card.Content style={styles.cardContent}>
-          <NestableDraggableFlatList
+          <DraggableList
             data={routineItems}
-            onDragEnd={({ data, from, to }) => {
-              updateRoutineItemOrder(data, from, to);
-            }}
+            onReorder={(data, from, to) =>
+              updateRoutineItemOrder(data, from, to)
+            }
             keyExtractor={(item) => `${item.id}`}
             renderItem={({ item: routineItem, drag, isActive }) => (
-              <ScaleDecorator>
-                <RoutineItem
-                  routineItem={routineItem}
-                  reloadRoutine={reloadRoutine}
-                  onSelectRoutine={onSelectSpecificRoutine}
-                  drag={drag}
-                  isActive={isActive}
-                />
-              </ScaleDecorator>
+              <RoutineItem
+                routineItem={routineItem}
+                reloadRoutine={reloadRoutine}
+                onSelectRoutine={onSelectSpecificRoutine}
+                drag={drag}
+                isActive={isActive}
+              />
             )}
           />
           <Button

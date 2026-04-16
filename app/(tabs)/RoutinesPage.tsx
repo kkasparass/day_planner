@@ -1,10 +1,11 @@
+import React from "react";
 import { StyleSheet } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { Button, Divider } from "react-native-paper";
 import { InputDialog } from "@/components/dialogs/InputDialog";
 import { Routine } from "@/components/Routines/Routine/Routine";
 import { useRoutinesPage } from "@/components/Routines/useRoutinesPage";
-import { NestableScrollContainer } from "react-native-draggable-flatlist";
 
 export default function RoutinesPage() {
   const {
@@ -32,7 +33,7 @@ export default function RoutinesPage() {
 
       <Divider />
 
-      <NestableScrollContainer>
+      <ScrollView>
         {routines.map((routine) => (
           <Routine
             routine={routine}
@@ -40,7 +41,7 @@ export default function RoutinesPage() {
             reloadRoutines={handleReloadDB}
           />
         ))}
-      </NestableScrollContainer>
+      </ScrollView>
 
       <InputDialog
         isVisible={newRoutinedialogVisible}

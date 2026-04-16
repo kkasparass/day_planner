@@ -1,5 +1,5 @@
+import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-
 import { Card } from "react-native-paper";
 import { PlanningCategory } from "@/types/types";
 import { NestedPlanAccordionCTA } from "./NestedPlanAccordionCTA/NestedPlanAccordionCTA";

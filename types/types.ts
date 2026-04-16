@@ -5,7 +5,7 @@ export type PlanningCategory = {
   parnet: number;
   tag: string;
   parentLabel: string;
-  lastDone: string;
+  lastDone: string | null;
   repeatFreq: number | null;
   effort: number;
 };

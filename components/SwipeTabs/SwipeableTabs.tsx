@@ -32,16 +32,16 @@ interface IProps {
 }
 const { width } = Dimensions.get("window");
 const animated = new Animated.Value(0);
-var startPageX = 0;
+let startPageX = 0;
 
 export default function SwipeableTabs(props: IProps) {
-  var selectedIndex = 0;
+  let selectedIndex = 0;
 
   let { children, onSwipe, labels, labelComponents } = props;
   onSwipe = onSwipe || (() => {});
   if (children && !children.length) children = [children];
 
-  const TabStateWrapperRef = React.useRef<TabStateWrapper>();
+  const TabStateWrapperRef = React.useRef<TabStateWrapper | undefined>(undefined);
   const TabBar = DefaultTabBar;
   const Tabs = children || [];
   const { isRTL } = I18nManager;

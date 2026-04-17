@@ -44,7 +44,7 @@ export const useRoutine = ({
       setup();
       setReloadDB(false);
     }
-  }, [reloadDB]);
+  }, [reloadDB, db, routine.id]);
 
   const reloadRoutine = () => setReloadDB(true);
   const openNewRoutineDialog = () => setNewDialogVisible(true);

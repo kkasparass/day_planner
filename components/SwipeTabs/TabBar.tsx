@@ -30,7 +30,7 @@ export default function TabBar({
                   !!onPress && onPress(index);
                 }}
               >
-                <Comp selected={selectedIndex == index} label={labels[index]} />
+                <Comp selected={selectedIndex === index} label={labels[index]} />
               </TouchableOpacity>
             );
           })
@@ -42,7 +42,7 @@ export default function TabBar({
                   !!onPress && onPress(index);
                 }}
                 style={
-                  selectedIndex == index
+                  selectedIndex === index
                     ? { color: "black" }
                     : { color: "gray" }
                 }

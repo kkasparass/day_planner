@@ -1,5 +1,5 @@
 import React from "react";
-import { renderHook, waitFor, act } from "@testing-library/react-native";
+import { renderHook, act } from "@testing-library/react-native";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { useSQLiteContext } from "expo-sqlite";
@@ -29,10 +29,12 @@ const makeStore = (reloadForId: number | null = null) =>
     },
   });
 
-const makeWrapper =
-  (store: ReturnType<typeof makeStore>) =>
-  ({ children }: { children: React.ReactNode }) =>
-    React.createElement(Provider, { store, children });
+const makeWrapper = (store: ReturnType<typeof makeStore>) => {
+  function Wrapper({ children }: { children: React.ReactNode }) {
+    return React.createElement(Provider, { store, children });
+  }
+  return Wrapper;
+};
 
 const makeTodo = (overrides: Partial<DailyTodo> = {}): DailyTodo => ({
   id: 1,

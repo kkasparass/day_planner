@@ -5,7 +5,10 @@ import { RoutineItem as RoutineItemT } from "@/types/types";
 import { LabelEffortDialog } from "../../dialogs/LabelEffortDialog";
 import { useRoutineItem } from "./useRoutineItem";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { DragGesture, DragHandle } from "@/components/DraggableList/DraggableList";
+import {
+  DragGesture,
+  DragHandle,
+} from "@/components/DraggableList/DraggableList";
 
 export const RoutineItem = ({
   routineItem,
@@ -41,7 +44,8 @@ export const RoutineItem = ({
       </DragHandle>
       <TouchableRipple
         style={styles.routineTextRipple}
-        rippleColor="rgba(255, 255, 255, 0.32)"
+        background={{ color: "rgba(255, 255, 255, .32)", foreground: true }}
+        // rippleColor="rgba(255, 255, 255, 0.32)"
         onPress={openEditDialog}
         onLongPress={handleRoutineLongPress}
       >

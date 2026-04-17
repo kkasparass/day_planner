@@ -24,7 +24,7 @@ export const useRoutineEffortList = () => {
       setRoutines(result);
     }
     setup();
-  }, []);
+  }, [db]);
 
   return {
     routines,

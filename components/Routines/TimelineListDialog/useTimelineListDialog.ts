@@ -28,7 +28,7 @@ export const useTimelineListDialog = ({
       setup();
       setReloadDB(false);
     }
-  }, [reloadDB]);
+  }, [reloadDB, db]);
 
   return {
     todaoTimeline,

@@ -41,7 +41,7 @@ export const TimelineListDialog = ({
             <TouchableRipple
               style={styles.timelineButton}
               onPress={() => onTimelineSelect(todoDay.id)}
-              rippleColor="rgba(0, 0, 0, .32)"
+              background={{ color: "rgba(0, 0, 0, .32)", foreground: true }}
             >
               <View>
                 <Text style={{ fontSize: 17 }}>

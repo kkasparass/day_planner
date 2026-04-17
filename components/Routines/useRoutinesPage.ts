@@ -19,7 +19,7 @@ export const useRoutinesPage = () => {
       setup();
       setReloadDB(false);
     }
-  }, [reloadDB]);
+  }, [reloadDB, db]);
 
   const openNewRoutineDialog = () => setNewRoutineDialogVisible(true);
   const closeNewRoutineDialog = () => setNewRoutineDialogVisible(false);

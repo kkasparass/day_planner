@@ -140,9 +140,9 @@ export const useTimelineItem = ({
       setup();
       dispatch(todaoLoaded(id));
     }
-  }, [reloadDB]);
+  }, [reloadDB, db, dispatch, id]);
 
-  const reloadTimeline = useCallback(() => dispatch(reloadTodaoTimeline()), []);
+  const reloadTimeline = useCallback(() => dispatch(reloadTodaoTimeline()), [dispatch]);
 
   const handleDeleteDay = async () => {
     await db.runAsync("DELETE FROM todao_timeline WHERE id = $id", {

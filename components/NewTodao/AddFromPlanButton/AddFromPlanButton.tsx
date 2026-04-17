@@ -28,7 +28,7 @@ export const AddFromPlanButton = ({
         borderColor: resolveBorderColor(daysOver),
       }}
       onPress={onPress}
-      rippleColor="rgba(0, 0, 0, .32)"
+      background={{ color: "rgba(0, 0, 0, .32)", foreground: true }}
     >
       <View style={styles.optionFlexContainer}>
         <View>

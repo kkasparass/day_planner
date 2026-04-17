@@ -24,7 +24,7 @@ export const useTodaoTimeline = () => {
       setup();
       dispatch(timelineLoaded());
     }
-  }, [reloadDB]);
+  }, [reloadDB, db, dispatch]);
 
   const handleNewDay = async () => {
     await db.runAsync(

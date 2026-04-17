@@ -14,7 +14,7 @@ export default function ParallaxScrollView({
   fullWidth,
 }: Props) {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={["top"]}>
       {title && (
         <Appbar>
           <Appbar.Content title={title} />

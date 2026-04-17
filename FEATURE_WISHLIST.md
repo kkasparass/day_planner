@@ -1,6 +1,6 @@
 # Feature Wishlist
 
-Potential improvements unlocked by the SDK 53 / React 19 / RN 0.79 upgrade.
+Potential improvements unlocked by the SDK 53→55 / React 19 / RN 0.79→0.83 upgrades.
 
 ---
 
@@ -88,3 +88,39 @@ function handleComplete(id: number) {
 **Impact:** Checkbox and delete feel instant instead of waiting for SQLite write + reload cycle. Especially noticeable on slower devices.
 
 **Risk:** Low — self-contained per component. Can be added incrementally to individual todo item components without touching shared hooks.
+
+---
+
+## 4. `useEffectEvent` to Clean Up Effect Dependencies
+
+**Package:** React 19 (already installed)
+
+**What:** `useEffectEvent` extracts non-reactive logic out of a `useEffect` into a stable function that always reads the latest values but is never listed as a dependency. Fixes the semantic mismatch where values like `db` and `dispatch` had to be added to dep arrays purely to satisfy the linter, even though they should never re-trigger the effect.
+
+**Current pattern:**
+
+```ts
+useEffect(() => {
+  if (reloadDB) {
+    db.getAllAsync(...).then(setItems);
+    dispatch(todaoLoaded(id));
+  }
+}, [reloadDB, db, dispatch, id]); // db/dispatch/id are stable but linter requires them
+```
+
+**Target pattern:**
+
+```ts
+const fetchItems = useEffectEvent(() => {
+  db.getAllAsync(...).then(setItems);
+  dispatch(todaoLoaded(id));
+});
+
+useEffect(() => {
+  if (reloadDB) fetchItems();
+}, [reloadDB]); // only the actual trigger dep
+```
+
+**Impact:** Removes `eslint-disable` comments and semantically-incorrect deps from every hook that uses the reload-signal pattern (`useTimelineItem`, `useTodaoTimeline`, `useRoutine`, etc.). Makes intent explicit — `reloadDB` triggers the effect, `db`/`dispatch`/`id` are just tools it uses.
+
+**Risk:** Low — drop-in replacement per hook, no behavior change. Still marked experimental in React 19 but stable in React Native usage.

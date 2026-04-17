@@ -1,3 +1,4 @@
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Text, TouchableRipple } from "react-native-paper";
 import { STATUS_COLORS } from "@/constants/Colors";
@@ -41,7 +42,7 @@ export const AddFromPlanButton = ({
               backgroundColor: resolveEffortColor(
                 effort ?? 0,
                 currentEffortTotal,
-                energyCap
+                energyCap,
               ),
             }}
           >

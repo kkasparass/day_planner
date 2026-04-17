@@ -1,7 +1,6 @@
-import { STATUS_COLORS } from "@/constants/Colors";
-import { useRef } from "react";
+import React from "react";
 import { View } from "react-native";
-import { Button, TextInput } from "react-native-paper";
+import { TextInput } from "react-native-paper";
 import { ToggleButton } from "./ToggleButton";
 
 export const EffortOptionsInput = ({

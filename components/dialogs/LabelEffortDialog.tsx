@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { InputDialog, InputDialogProps } from "./InputDialog";
 import { EffortOptionsInput } from "../effortManagement/EffortOptionsInput/EffortOptionsInput";
 

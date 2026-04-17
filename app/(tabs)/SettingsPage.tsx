@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { ScrollView, View } from "react-native";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { Button } from "react-native-paper";

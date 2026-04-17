@@ -1,3 +1,4 @@
+import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { Text, TouchableRipple } from "react-native-paper";
 import { useRoutineEffortList } from "./useRoutineEffortList";

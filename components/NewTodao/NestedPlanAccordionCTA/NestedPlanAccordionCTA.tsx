@@ -1,3 +1,4 @@
+import React from "react";
 import { View, Pressable, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { PlanningCategory } from "@/types/types";
@@ -35,7 +36,7 @@ export const NestedPlanAccordionCTA = ({
             effort={cat.effort}
             daysOver={resolveDaysOver(
               cat.repeatFreq ?? 0,
-              cat.lastDone ? new Date(cat.lastDone) : null
+              cat.lastDone ? new Date(cat.lastDone) : null,
             )}
             energyCap={energyCap}
             currentEffortTotal={currentEffortTotal}

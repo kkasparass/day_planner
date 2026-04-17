@@ -1,3 +1,4 @@
+import React from "react";
 import { PlanList } from "@/components/PlanList";
 import SwipeableTabs from "@/components/SwipeTabs/SwipeableTabs";
 import { useCategoryTags } from "@/hooks/useCategoryTags";

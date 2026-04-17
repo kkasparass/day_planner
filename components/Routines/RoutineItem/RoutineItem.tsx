@@ -1,9 +1,11 @@
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Badge, IconButton, Text, TouchableRipple } from "react-native-paper";
 import { RoutineItem as RoutineItemT } from "@/types/types";
 import { LabelEffortDialog } from "../../dialogs/LabelEffortDialog";
 import { useRoutineItem } from "./useRoutineItem";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { DragGesture, DragHandle } from "@/components/DraggableList/DraggableList";
 
 export const RoutineItem = ({
   routineItem,
@@ -15,10 +17,10 @@ export const RoutineItem = ({
   routineItem: RoutineItemT;
   reloadRoutine: () => void;
   onSelectRoutine: (specificRoutine: number) => void;
-  drag: () => void;
+  drag: DragGesture;
   isActive: boolean;
 }) => {
-  const { id, effort } = routineItem;
+  const { effort } = routineItem;
   const {
     editDialogVisible,
     handleDelete,
@@ -30,9 +32,13 @@ export const RoutineItem = ({
 
   return (
     <View style={styles.routineItemRow}>
-      <TouchableRipple onLongPress={drag} disabled={isActive}>
-        <Ionicons name="reorder-four-outline" color="white" size={24} />
-      </TouchableRipple>
+      <DragHandle gesture={drag}>
+        <Ionicons
+          name="reorder-four-outline"
+          color={isActive ? "rgba(255,255,255,0.4)" : "white"}
+          size={24}
+        />
+      </DragHandle>
       <TouchableRipple
         style={styles.routineTextRipple}
         rippleColor="rgba(255, 255, 255, 0.32)"

@@ -1,3 +1,4 @@
+import React from "react";
 import { StyleSheet } from "react-native";
 import { FC } from "react";
 import { Button, Dialog, Portal } from "react-native-paper";

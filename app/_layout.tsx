@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   DarkTheme,
   DefaultTheme,
@@ -55,7 +55,10 @@ export default function RootLayout() {
                 }}
               >
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                <Stack.Screen name="planner/edit/[id]" options={{ title: "Edit Plan" }} />
+                <Stack.Screen
+                  name="planner/edit/[id]"
+                  options={{ title: "Edit Plan" }}
+                />
                 <Stack.Screen name="+not-found" />
               </Stack>
             </ThemeProvider>

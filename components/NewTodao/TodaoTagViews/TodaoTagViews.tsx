@@ -1,9 +1,9 @@
+import React from "react";
 import { View } from "react-native";
 import { PlanningCategory } from "@/types/types";
 import SwipeableTabs from "../../SwipeTabs/SwipeableTabs";
 import { TodaoPlanList } from "../TodaoPlanList";
 import { useCategoryTags } from "@/hooks/useCategoryTags";
-import { Text } from "react-native-paper";
 import { RoutinesList } from "../RoutinesList/RoutinesList";
 
 export const TodaoTagViews = ({

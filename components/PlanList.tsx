@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Card, FAB } from "react-native-paper";
 import { NestedPlanAccordion } from "@/components/NestedPlanAccordion";

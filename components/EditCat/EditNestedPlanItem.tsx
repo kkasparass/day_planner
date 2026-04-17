@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { View, Pressable, StyleSheet } from "react-native";
 import { Checkbox, Text, TextInput } from "react-native-paper";
 import { PlanningCategory } from "@/types/types";

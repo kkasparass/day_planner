@@ -1,3 +1,4 @@
+import React from "react";
 import { KeyboardTypeOptions, StyleSheet, View } from "react-native";
 import { FC, ReactNode, useState } from "react";
 import { Button, Dialog, Portal, TextInput } from "react-native-paper";

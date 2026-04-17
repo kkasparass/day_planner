@@ -1,3 +1,4 @@
+import React from "react";
 import type { PropsWithChildren } from "react";
 import { StyleSheet } from "react-native";
 

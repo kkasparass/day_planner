@@ -1,11 +1,9 @@
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Card, Divider, ProgressBar, Text } from "react-native-paper";
 import { TodoTimelineItem } from "@/types/types";
 import { Colors, STATUS_COLORS } from "@/constants/Colors";
-import {
-  NestableDraggableFlatList,
-  ScaleDecorator,
-} from "react-native-draggable-flatlist";
+import { DraggableList } from "@/components/DraggableList/DraggableList";
 import { useTimelineItem } from "./useTimelineItem";
 import { InputDialog } from "@/components/dialogs/InputDialog";
 import { NewTodaoDialog } from "@/components/NewTodao/NewTodaoDialog";
@@ -67,29 +65,22 @@ export const TimelineItem = ({
       />
       <Card>
         <Card.Content style={styles.todaoCardContainer}>
-          <NestableDraggableFlatList
+          <DraggableList
             data={undoneTodos}
-            onDragEnd={({ data, from, to }) => {
-              updateUndoneTodoOrder(data, from, to);
-            }}
+            onReorder={(data, from, to) => updateUndoneTodoOrder(data, from, to)}
             keyExtractor={(item) => `${item.id}`}
             renderItem={({ item: todo, drag, isActive }) => (
-              <ScaleDecorator>
-                <View
-                  style={
-                    isActive && { backgroundColor: `${Colors.dark.text}20` }
-                  }
-                >
-                  <Task
-                    todo={todo}
-                    key={todo.id}
-                    dayDate={date}
-                    reloadTodos={handleReloadDB}
-                    drag={drag}
-                    isActive={isActive}
-                  />
-                </View>
-              </ScaleDecorator>
+              <View
+                style={isActive ? { backgroundColor: `${Colors.dark.text}20` } : undefined}
+              >
+                <Task
+                  todo={todo}
+                  dayDate={date}
+                  reloadTodos={handleReloadDB}
+                  drag={drag}
+                  isActive={isActive}
+                />
+              </View>
             )}
           />
           {completedTodos.length > 0 && (
@@ -102,7 +93,6 @@ export const TimelineItem = ({
                   dayDate={date}
                   reloadTodos={handleReloadDB}
                   isActive={false}
-                  drag={() => {}}
                 />
               ))}
             </>

@@ -76,6 +76,7 @@ export const useSettingsPage = () => {
         to: dbPath,
         from: backupPath,
       });
+      alert("Database restored. Please restart the app for changes to take full effect.");
     } catch (error) {
       alert(error);
     }

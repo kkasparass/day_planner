@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
+import { KeyboardAvoidingView, StyleSheet, View } from "react-native";
 import { Button, Modal, Portal, Text, TextInput } from "react-native-paper";
 import { TodaoTagViews } from "./TodaoTagViews/TodaoTagViews";
 import { PlanningCategory } from "@/types/types";
@@ -40,7 +40,7 @@ export const NewTodaoDialog = ({
         style={styles.modalContainer}
       >
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          behavior="padding"
         >
           <View style={styles.titleHeaderContainer}>
             <Text variant="displayMedium">New Todos</Text>

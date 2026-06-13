@@ -40,7 +40,7 @@ export const NewTodaoDialog = ({
         style={styles.modalContainer}
       >
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "position"}
+        // behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
           <View style={styles.titleHeaderContainer}>
             <Text variant="displayMedium">New Todos</Text>
